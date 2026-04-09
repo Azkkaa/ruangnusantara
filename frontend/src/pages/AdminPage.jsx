@@ -1,8 +1,9 @@
-import { useOrders } from '../context/OrdersContext';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import OrderCard from '../components/OrderCard';
 
 const AdminPage = () => {
-  const { orders } = useOrders();
+  const [orders, setOrders] = useState([]);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
@@ -12,13 +13,15 @@ const AdminPage = () => {
     }).format(price);
   };
 
-  const getTotalRevenue = () => {
-    return orders.reduce((sum, order) => sum + order.total, 0);
-  };
+  useEffect(() => {
+    const handleRequest = async () => {
+      const res = await axios.get('http://localhost:8000/api/admin/orders')
 
-  const getOrdersByStatus = (status) => {
-    return orders.filter(order => order.status === status).length;
-  };
+      setOrders(res.data.resources)
+    }
+
+    handleRequest()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -32,21 +35,21 @@ const AdminPage = () => {
           </div>
           <div className="bg-yellow-50 rounded-lg shadow-md p-6 border border-yellow-200">
             <p className="text-gray-600 text-sm mb-1">Pending</p>
-            <p className="text-3xl font-bold text-yellow-600">{getOrdersByStatus('pending')}</p>
+            <p className="text-3xl font-bold text-yellow-600">0</p>
           </div>
           <div className="bg-blue-50 rounded-lg shadow-md p-6 border border-blue-200">
             <p className="text-gray-600 text-sm mb-1">Processing</p>
-            <p className="text-3xl font-bold text-blue-600">{getOrdersByStatus('diproses')}</p>
+            <p className="text-3xl font-bold text-blue-600">0</p>
           </div>
           <div className="bg-green-50 rounded-lg shadow-md p-6 border border-green-200">
             <p className="text-gray-600 text-sm mb-1">Completed</p>
-            <p className="text-3xl font-bold text-green-600">{getOrdersByStatus('selesai')}</p>
+            <p className="text-3xl font-bold text-green-600">0</p>
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <p className="text-gray-600 text-sm mb-1">Total Revenue</p>
-          <p className="text-4xl font-bold text-orange-600">{formatPrice(getTotalRevenue())}</p>
+          <p className="text-4xl font-bold text-orange-600">Rp 1.000.000</p>
         </div>
 
         <div className="mb-6">

@@ -23,7 +23,7 @@ const Header = () => {
                 </span> 
               )}
             </Link>
-            <Link to="/admin" className="hover:text-orange-100 transition font-medium">
+            <Link to="/admin/orders" className="hover:text-orange-100 transition font-medium">
               Admin
             </Link>
             <Link to="/auth" className="hover:text-orange-100 transition font-medium">

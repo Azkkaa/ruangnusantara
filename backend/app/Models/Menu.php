@@ -11,4 +11,9 @@ class Menu extends Model
         'price',
         'image'
     ];
+
+    public function orderItem()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

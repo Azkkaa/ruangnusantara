@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('menu_id')->constrained('menus');
             $table->integer('quantity');
-            $table->integer('price_order');
+            $table->integer('price');
             $table->integer('subtotal');
             $table->timestamps();
         });

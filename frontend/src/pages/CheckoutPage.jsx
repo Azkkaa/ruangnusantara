@@ -40,14 +40,14 @@ const CheckoutPage = () => {
       customerName: formData.customerName,
       phone: formData.phone,
       notes: formData.notes,
-      items: cartItems,
-      total: getCartTotal()
+      items: cartItems
     };
 
     const res = await axios.post('http://localhost:8000/api/orders', orderData)
-    console.log(res)
-    clearCart();
-    navigate('/success');
+    if (res.data.success) {
+      navigate('/success');
+      clearCart();
+    }
   };
 
   useEffect(() => {

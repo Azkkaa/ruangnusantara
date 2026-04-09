@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('customer_name');
             $table->string('phone');
-            $table->text('notes');
+            $table->text('notes')->nullable();
             $table->integer('total_price');
             $table->enum('status', ['pending', 'proses', 'selesai']);
             $table->timestamps();

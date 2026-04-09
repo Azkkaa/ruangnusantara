@@ -10,7 +10,7 @@
 - [x] Make data seeder in backend for product
 - [x] Make API call and test it
     - [x] GET /menus - Take all menu avaible
-    - [ ] POST /orders - Make new order
+    - [x] POST /orders - Make new order
     - [ ] GET /admin/orders - Admin - Take all order
     - [ ] GET /admin/orders/{id} - Admin - Detail 1 order
     - [ ] PATCH /order/{id}/status - Admin - Updating order status

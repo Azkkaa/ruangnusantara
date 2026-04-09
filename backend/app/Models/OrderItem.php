@@ -10,7 +10,17 @@ class OrderItem extends Model
         'order_id',
         'menu_id',
         'quantity',
-        'price_order',
+        'price',
         'subtotal'
     ];
+
+    public function menu ()
+    {
+        return $this->belongsTo(Menu::class);
+    }
+
+    public function order ()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

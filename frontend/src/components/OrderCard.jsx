@@ -39,7 +39,7 @@ const OrderCard = ({ order }) => {
     <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-xl font-bold text-gray-800">Order #{order.id}</h3>
+          <h3 className="text-xl font-bold text-gray-800">Order # {order.id}</h3>
           <p className="text-sm text-gray-600">{formatDate(order.createdAt)}</p>
         </div>
         <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${getStatusColor(order.status)}`}>
@@ -48,17 +48,17 @@ const OrderCard = ({ order }) => {
       </div>
 
       <div className="border-t border-b border-gray-200 py-3 my-3">
-        <p className="font-semibold text-gray-700">Customer: {order.customerName}</p>
+        <p className="font-semibold text-gray-700">Customer: {order.customer_name}</p>
         <p className="text-gray-600">Phone: {order.phone}</p>
         {order.notes && <p className="text-gray-600 italic mt-1">Notes: {order.notes}</p>}
       </div>
 
       <div className="space-y-2 mb-4">
         <p className="font-semibold text-gray-700">Items:</p>
-        {order.items.map((item, index) => (
+        {order.order_item.map((item, index) => (
           <div key={index} className="flex justify-between text-sm">
             <span className="text-gray-700">
-              {item.name} x{item.quantity}
+              {item.menu.name} x{item.quantity}
             </span>
             <span className="text-gray-900 font-medium">
               {formatPrice(item.price * item.quantity)}
@@ -70,7 +70,7 @@ const OrderCard = ({ order }) => {
       <div className="flex justify-between items-center pt-3 border-t border-gray-200">
         <div>
           <p className="text-sm text-gray-600">Total</p>
-          <p className="text-2xl font-bold text-orange-600">{formatPrice(order.total)}</p>
+          <p className="text-2xl font-bold text-orange-600">{formatPrice(order.total_price)}</p>
         </div>
         {order.status !== 'selesai' && (
           <button

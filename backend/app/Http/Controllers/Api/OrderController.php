@@ -3,15 +3,70 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Order\OrderStoreRequest;
+use App\Models\Menu;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function store (Request $request)
+    public function store (OrderStoreRequest $request)
     {
-        return response()->json([
-            'response' => $request->all()
-        ]);
+        try {
+            $order = DB::transaction(function () use ($request) {
+                // Service
+
+                // this code prevent hacker from manipulate the price
+                // rather than we use data that client sent
+                // we validate the data is right in here using whereIn get
+                $itemids = collect($request->items)->pluck('id')->toArray();
+                $items = Menu::whereIn('id', $itemids)->get()->keyBy('id');
+
+                $totalPrice = 0;
+                $orderItemsCreation = [];
+                foreach ($request->items as $requestItem) {
+                    $menu = $items[$requestItem['id']];
+                    $subtotal = $menu->price * $requestItem['quantity'];
+
+                    $totalPrice += $subtotal;
+
+                    $orderItemsCreation[] = [
+                        'menu_id' => $menu->id,
+                        'price' => $menu->price,
+                        'quantity' => $requestItem['quantity'],
+                        'subtotal' => $subtotal
+                    ];
+                }
+
+
+                $order = Order::create([
+                    'customer_name' => $request->customerName,
+                    'phone' => $request->phone,
+                    'notes' => $request->notes,
+                    'total_price' => $totalPrice,
+                    'status' => 'pending'
+                ]);
+
+                $order->orderItem()->createMany($orderItemsCreation);
+
+                return $order;
+            });
+
+            // Response
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully creating order!',
+                'order' => $order
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'response' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ]
+            ], 500);
+        }
     }
 
     public function updateStatus ()
