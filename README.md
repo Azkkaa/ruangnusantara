@@ -11,6 +11,12 @@
 - [x] Make API call and test it
     - [x] GET /menus - Take all menu avaible
     - [x] POST /orders - Make new order
-    - [ ] GET /admin/orders - Admin - Take all order
-    - [ ] GET /admin/orders/{id} - Admin - Detail 1 order
-    - [ ] PATCH /order/{id}/status - Admin - Updating order status
+    - [x] GET /admin/orders - Admin - Take all order
+    - [x] GET /admin/orders/{id} - Admin - Detail 1 order
+    - [x] PATCH /order/{id}/status - Admin - Updating order status
+
+
+## Stable version of online ordering based application (Rasa Nusantara)
+## &#9745; List MVP Done
+
+### Next &rarr; Auth System

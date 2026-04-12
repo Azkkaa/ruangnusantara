@@ -1,7 +1,9 @@
-import { useOrders } from '../context/OrdersContext';
+import axios from 'axios';
+import { useState } from 'react';
 
 const OrderCard = ({ order }) => {
-  const { updateOrderStatus, getNextStatus } = useOrders();
+  const [status, setStatus] = useState(order.status)
+  const [isProcess, setIsProcess] = useState(false)
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
@@ -24,15 +26,28 @@ const OrderCard = ({ order }) => {
   const getStatusColor = (status) => {
     const colors = {
       'pending': 'bg-yellow-100 text-yellow-800 border-yellow-300',
-      'diproses': 'bg-blue-100 text-blue-800 border-blue-300',
-      'selesai': 'bg-green-100 text-green-800 border-green-300'
+      'process': 'bg-blue-100 text-blue-800 border-blue-300',
+      'completed': 'bg-green-100 text-green-800 border-green-300'
     };
     return colors[status] || 'bg-gray-100 text-gray-800 border-gray-300';
   };
 
-  const handleUpdateStatus = () => {
-    const nextStatus = getNextStatus(order.status);
-    updateOrderStatus(order.id, nextStatus);
+  const handleUpdateStatus = async (id, newStatus) => {
+    try {
+      setIsProcess(true)
+      const res = await axios.patch(`http://localhost:8000/api/admin/orders/${id}/status`, {
+        status: newStatus
+      })
+  
+      if (res.data.success) {
+        alert('Menu item status successfully updated!')
+        setStatus(res.data.order.status)
+        setIsProcess(false)
+      }
+    } catch (e) {
+      console.error("Gagal update status:", e.response?.data?.message);
+      alert('Gagal Update Status')
+    }
   };
 
   return (
@@ -42,8 +57,8 @@ const OrderCard = ({ order }) => {
           <h3 className="text-xl font-bold text-gray-800">Order # {order.id}</h3>
           <p className="text-sm text-gray-600">{formatDate(order.createdAt)}</p>
         </div>
-        <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${getStatusColor(order.status)}`}>
-          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+        <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${getStatusColor(status)}`}>
+          {status.charAt(0).toUpperCase() + status.slice(1)}
         </span>
       </div>
 
@@ -72,10 +87,11 @@ const OrderCard = ({ order }) => {
           <p className="text-sm text-gray-600">Total</p>
           <p className="text-2xl font-bold text-orange-600">{formatPrice(order.total_price)}</p>
         </div>
-        {order.status !== 'selesai' && (
+        {status !== 'completed' && (
           <button
-            onClick={handleUpdateStatus}
-            className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors duration-200"
+            onClick={() => handleUpdateStatus(order.id, status === 'process' ? 'completed' : 'process')}
+            disabled={isProcess}
+            className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors duration-200 disabled:bg-gray-600 disabled:hover:bg-gray-700"
           >
             Update Status
           </button>

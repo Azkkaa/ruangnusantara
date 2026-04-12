@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
@@ -6,6 +6,8 @@ import axios from 'axios';
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { cartItems, getCartTotal, clearCart } = useCart();
+  const [loading, setLoading] = useState(false);
+  const isCheckingOut = useRef(false);
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -43,18 +45,28 @@ const CheckoutPage = () => {
       items: cartItems
     };
 
-    const res = await axios.post('http://localhost:8000/api/orders', orderData)
-    if (res.data.success) {
-      navigate('/success');
-      clearCart();
+    try {
+      setLoading(true)
+      const res = await axios.post('http://localhost:8000/api/orders', orderData)
+
+      if (res.data.success) {
+        isCheckingOut.current = true;
+
+        clearCart();
+        navigate('/success');
+      }
+    } catch (e) {
+      setLoading(false)
+      console.error("Order failed: ", e);
+      alert("Something went wrong. Please try again.")
     }
   };
 
   useEffect(() => {
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 && !isCheckingOut.current) {
       navigate('/cart');
     }
-  })
+  }, [cartItems, navigate])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -115,9 +127,10 @@ const CheckoutPage = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full mt-6 bg-orange-600 text-white py-3 rounded-lg font-bold text-lg hover:bg-orange-700 transition"
+                  className="w-full mt-6 bg-orange-600 text-white py-3 rounded-lg font-bold text-lg hover:bg-orange-700 transition disabled:bg-gray-600"
+                  disabled={loading}
                 >
-                  Place Order
+                  {loading ? 'Processing...' : 'Place Order'}
                 </button>
               </form>
             </div>

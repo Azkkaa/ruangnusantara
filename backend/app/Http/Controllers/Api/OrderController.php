@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Models\Menu;
 use App\Models\Order;
-use App\Models\OrderItem;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -67,10 +66,5 @@ class OrderController extends Controller
                 ]
             ], 500);
         }
-    }
-
-    public function updateStatus ()
-    {
-
     }
 }

@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderCard from '../components/OrderCard';
+import Dropdown from '../components/ToggleDropdown';
 
 const AdminPage = () => {
   const [orders, setOrders] = useState([]);
+  const [status, setStatus] = useState({pending: 0, process: 0, completed: 0});
+  const [revenue, setRevenue] = useState(0);
+  const [data, setData] = useState(null)
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
@@ -18,10 +22,31 @@ const AdminPage = () => {
       const res = await axios.get('http://localhost:8000/api/admin/orders')
 
       setOrders(res.data.resources)
+      setStatus(() => {
+        const ordersItem = res.data.resources
+
+        return {
+          pending: ordersItem.filter(o => o.status === 'pending').length,
+          process: ordersItem.filter(o => o.status === 'process').length,
+          completed: ordersItem.filter(o => o.status === 'completed').length
+        }
+      })
+      setRevenue(res.data.revenue.month)
+      setData(res.data)
     }
 
     handleRequest()
   }, [])
+
+  const handleReveChange = (reve) => {
+    if (reve == 'Today') {
+      setRevenue(data.revenue.today)
+    } else if (reve == 'Week') {
+      setRevenue(data.revenue.week)
+    } else if (reve == 'Month') {
+      setRevenue(data.revenue.month)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -35,21 +60,26 @@ const AdminPage = () => {
           </div>
           <div className="bg-yellow-50 rounded-lg shadow-md p-6 border border-yellow-200">
             <p className="text-gray-600 text-sm mb-1">Pending</p>
-            <p className="text-3xl font-bold text-yellow-600">0</p>
+            <p className="text-3xl font-bold text-yellow-600">{status.pending}</p>
           </div>
           <div className="bg-blue-50 rounded-lg shadow-md p-6 border border-blue-200">
             <p className="text-gray-600 text-sm mb-1">Processing</p>
-            <p className="text-3xl font-bold text-blue-600">0</p>
+            <p className="text-3xl font-bold text-blue-600">{status.process}</p>
           </div>
           <div className="bg-green-50 rounded-lg shadow-md p-6 border border-green-200">
             <p className="text-gray-600 text-sm mb-1">Completed</p>
-            <p className="text-3xl font-bold text-green-600">0</p>
+            <p className="text-3xl font-bold text-green-600">{status.completed}</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <p className="text-gray-600 text-sm mb-1">Total Revenue</p>
-          <p className="text-4xl font-bold text-orange-600">Rp 1.000.000</p>
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm mb-1">Total Revenue</p>
+            <p className="text-4xl font-bold text-green-600">{formatPrice(revenue)}</p>
+          </div>
+          <div>
+            <Dropdown options={['Today', 'Week', 'Month']} onUpdate={handleReveChange}/>
+          </div>
         </div>
 
         <div className="mb-6">

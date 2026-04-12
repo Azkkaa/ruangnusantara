@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import font from '../../assets/image/logo/logo_font_rasanusantara-no-bg.png'
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -28,13 +29,9 @@ const AuthPage = () => {
         {/* Header Tema Orange */}
         <div className="bg-orange-600 py-8 px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-2">
-            {isLogin ? 'Welcome Back!' : 'Join RestoOrder'}
+            <span>Join</span>
+            <img src={font} alt="fontLogo" className='w-50 h-auto mx-auto mt-2'/>
           </h2>
-          <p className="text-orange-100">
-            {isLogin 
-              ? 'Login to order your favorite Indonesian dishes' 
-              : 'Create an account to start your culinary journey'}
-          </p>
         </div>
 
         {/* Form Section */}

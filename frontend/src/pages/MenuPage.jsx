@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import MenuItem from '../components/MenuItem';
 import axios from 'axios';
 import Loading from '../components/Loading';
+import fullLogoNobg from '../assets/image/logo/full_logo_rasanusantara-no-bg.png';
 
 const MenuPage = () => {
   const [error, setError] = useState(false);
@@ -14,51 +15,75 @@ const MenuPage = () => {
         setDatas(res.data.resources)
       } catch (err) {
         setError(true)
-
-        // condition where server give error response
         if (err.response) {
           setDatas(err.response)
         }
-
-        // condition where server doesn't give anything
-        // or server down
-        // ---write here---
       }
     }
-
     handleRequest()
   }, [])
 
-  // -- error page temporary --
+  // State Error yang lebih halus
   if (error) return (
-    <main>
-      <div className='mt-50 text-center'>
-        <p className='text-red-600 font-bold text-3xl'>
-          Error Code {datas.status}
-        </p>
+    <main className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className='text-center'>
+        <h1 className="text-6xl font-black text-gray-200 mb-4">Opps!</h1>
+        <p className='text-gray-500 text-lg mb-6'>Sepertinya terjadi kesalahan teknis.</p>
+        <div className="inline-block px-4 py-2 bg-red-50 rounded-lg">
+           <p className='text-red-600 font-medium'>Error Code: {datas.status || 'Connection Refused'}</p>
+        </div>
       </div>
     </main>
   )
 
-  if (datas <= 0) return (
-    <main className='mt-30'>
+  // Loading state yang centered
+  if (datas.length === 0) return (
+    <main className='min-h-screen flex flex-col items-center justify-center bg-gray-50'>
       <Loading size={50}/>
+      <p className="mt-4 text-gray-400 animate-pulse">Menyiapkan hidangan terbaik...</p>
     </main>
   )
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Our Menu</h1>
-          <p className="text-gray-600">Choose your favorite Indonesian dishes</p>
+    <main className="min-h-screen bg-gray-50/50">
+      {/* Hero Section */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="container mx-auto px-6 pt-12 pb-7 flex flex-col items-center">
+          <img 
+            src={fullLogoNobg} 
+            alt="Rasa Nusantara" 
+            className='w-48 h-auto mb-6 drop-shadow-sm'
+          />
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+              Selamat Datang
+            </h1>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      </div>
+
+      {/* Menu Grid */}
+      <div className="container mx-auto px-6 py-12">
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="text-2xl font-bold text-gray-800 relative inline-block border-b-2 border-orange-600">
+            Daftar Menu
+          </h2>
+          <span className="text-sm text-gray-400">{datas.length} Pilihan Menu</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {datas.map(item => (
-            <MenuItem key={item.id} item={item} />
+            <div key={item.id} className="transform transition duration-300 hover:-translate-y-2">
+              <MenuItem item={item} />
+            </div>
           ))}
         </div>
       </div>
+      
+      {/* Footer Simple */}
+      <footer className="py-12 text-center text-gray-400 text-sm">
+        <p>&copy; {new Date().getFullYear()} Rasa Nusantara. All rights reserved.</p>
+      </footer>
     </main>
   );
 };
