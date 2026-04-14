@@ -12,5 +12,7 @@ Route::post('/orders', [OrderController::class, 'store']);
 Route::prefix('admin')->group(function () {
     Route::get('/orders', [AdminOrderController::class, 'index']);
     Route::get('/orders/{id}', [AdminOrderController::class, 'show']);
+    Route::get('/order-status', [AdminOrderController::class, 'statusOrder']);
+
     Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
 });

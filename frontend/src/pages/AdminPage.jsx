@@ -48,6 +48,18 @@ const AdminPage = () => {
     }
   }
 
+  const handleStatus = async () => {
+    const res = await axios.get('http://localhost:8000/api/admin/order-status');
+
+    const updateStatus = {
+      pending: res.data.pending,
+      process: res.data.process,
+      completed: res.data.completed
+    }
+
+    setStatus(updateStatus)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
@@ -93,7 +105,7 @@ const AdminPage = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {orders.slice().reverse().map(order => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCard key={order.id} order={order} updateNumStatus={handleStatus}/>
             ))}
           </div>
         )}

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
+import HeaderCondition from './components/HeaderCondition';
 import MenuPage from './pages/MenuPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -11,7 +11,8 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
-        <Header />
+        <HeaderCondition />
+
         <Routes>
           <Route path="/" element={<MenuPage />} />
           <Route path="/cart" element={<CartPage />} />

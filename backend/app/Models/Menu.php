@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
+#[Fillable(['name', 'price', 'image_url'])]
 class Menu extends Model
 {
-    protected $fillable = [
-        'name',
-        'price',
-        'image'
-    ];
-
     public function orderItem()
     {
         return $this->hasMany(OrderItem::class);

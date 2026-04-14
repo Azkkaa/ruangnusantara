@@ -89,7 +89,7 @@ const AuthPage = () => {
               {isLogin ? "Don't have an account?" : "Already have an account?"}
               <button
                 onClick={() => setIsLogin(!isLogin)}
-                className="ml-2 text-orange-600 font-bold hover:text-orange-700 transition-colors"
+                className="ml-2 text-orange-600 font-bold hover:text-orange-700 hover:underline cursor-pointer transition-colors"
               >
                 {isLogin ? 'Register Now' : 'Login Here'}
               </button>

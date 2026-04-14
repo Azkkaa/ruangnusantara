@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-const OrderCard = ({ order }) => {
+const OrderCard = ({ order, updateNumStatus }) => {
   const [status, setStatus] = useState(order.status)
   const [isProcess, setIsProcess] = useState(false)
 
@@ -43,6 +43,7 @@ const OrderCard = ({ order }) => {
         alert('Menu item status successfully updated!')
         setStatus(res.data.order.status)
         setIsProcess(false)
+        updateNumStatus()
       }
     } catch (e) {
       console.error("Gagal update status:", e.response?.data?.message);
@@ -89,7 +90,9 @@ const OrderCard = ({ order }) => {
         </div>
         {status !== 'completed' && (
           <button
-            onClick={() => handleUpdateStatus(order.id, status === 'process' ? 'completed' : 'process')}
+            onClick={() => {
+              handleUpdateStatus(order.id, status === 'process' ? 'completed' : 'process')
+            }}
             disabled={isProcess}
             className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors duration-200 disabled:bg-gray-600 disabled:hover:bg-gray-700"
           >

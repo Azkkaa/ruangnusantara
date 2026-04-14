@@ -73,4 +73,28 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    public function statusOrder ()
+    {
+        try {
+            $allStatus = Order::pluck('status')->countBy();
+
+            return response()->json([
+                'pending' => $allStatus->get('pending', 0),
+                'completed' => $allStatus->get('completed', 0),
+                'process' => $allStatus->get('process', 0),
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get status',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function show ()
+    {
+
+    }
 }

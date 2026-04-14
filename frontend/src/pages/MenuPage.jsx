@@ -30,7 +30,7 @@ const MenuPage = () => {
         <h1 className="text-6xl font-black text-gray-200 mb-4">Opps!</h1>
         <p className='text-gray-500 text-lg mb-6'>Sepertinya terjadi kesalahan teknis.</p>
         <div className="inline-block px-4 py-2 bg-red-50 rounded-lg">
-           <p className='text-red-600 font-medium'>Error Code: {datas.status || 'Connection Refused'}</p>
+          <p className='text-red-600 font-medium'>Error Code: {datas.status || 'Connection Refused'}</p>
         </div>
       </div>
     </main>
