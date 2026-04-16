@@ -7,7 +7,8 @@ const AdminPage = () => {
   const [orders, setOrders] = useState([]);
   const [status, setStatus] = useState({pending: 0, process: 0, completed: 0});
   const [revenue, setRevenue] = useState(0);
-  const [data, setData] = useState(null)
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(false)
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', {
@@ -19,20 +20,16 @@ const AdminPage = () => {
 
   useEffect(() => {
     const handleRequest = async () => {
-      const res = await axios.get('http://localhost:8000/api/admin/orders')
-
-      setOrders(res.data.resources)
-      setStatus(() => {
-        const ordersItem = res.data.resources
-
-        return {
-          pending: ordersItem.filter(o => o.status === 'pending').length,
-          process: ordersItem.filter(o => o.status === 'process').length,
-          completed: ordersItem.filter(o => o.status === 'completed').length
-        }
-      })
-      setRevenue(res.data.revenue.month)
-      setData(res.data)
+      try {
+        const res = await axios.get('http://localhost:8000/api/admin/orders')
+  
+        setOrders(res.data.resources)
+        setStatus(res.data.total_orders)
+        setRevenue(res.data.revenue.month)
+        setData(res.data)
+      } catch {
+        setError(true)
+      }
     }
 
     handleRequest()
@@ -100,7 +97,7 @@ const AdminPage = () => {
 
         {orders.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <p className="text-gray-600 text-lg">No orders yet</p>
+            <p className="text-gray-600 text-lg">There are still no new orders</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

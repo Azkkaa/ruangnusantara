@@ -20,18 +20,18 @@
 ---
 
 ## Auth System (Next Development)
-- [ ] Setup Laravel Sanctum
-- [ ] Register API
-- [ ] Login API
+- [x] Setup Laravel Sanctum
+- [x] Register API
+- [x] Login API
 - [ ] Logout API
-- [ ] Get current user (profile)
-- [ ] Integrate auth with frontend (React)
-- [ ] Store token in frontend (localStorage / cookie)
+- [x] Get current user (profile)
+- [x] Integrate auth with frontend (React)
+- [x] Store token in frontend ( cookie)
 
 ---
 
 ## Authorization (Admin Role)
-- [ ] Add role column in users table (admin / user)
+- [x] Add role column in users table (admin / user)
 - [ ] Restrict admin routes using middleware
 - [ ] Protect endpoints:
     - [ ] GET /admin/orders

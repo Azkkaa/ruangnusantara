@@ -12,7 +12,11 @@ class OrderController extends Controller
     public function index ()
     {
         try {
-            $orders = Order::with('orderItem.menu')->get();
+            $orders = Order::with('orderItem.menu')
+                ->where('status', ['pending', 'process'])
+                ->get();
+
+            $orderStatus = Order::pluck('status');
 
             $now = Carbon::now();
             $reveToday = Order::where('status', 'completed')
@@ -34,6 +38,12 @@ class OrderController extends Controller
             return response()->json([
                 'message' => 'getting order data',
                 'resources' => $orders,
+                'total_orders' => [
+                    'total' => $orderStatus->count(),
+                    'pending' => $orderStatus->countBy()->get('pending', 0),
+                    'process' => $orderStatus->countBy()->get('process', 0),
+                    'completed' => $orderStatus->countBy()->get('completed', 0),
+                ],
                 'revenue' => [
                     'today' => $reveToday,
                     'week' => $reveWeek,

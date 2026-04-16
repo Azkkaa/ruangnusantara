@@ -1,15 +1,27 @@
-import axios from 'axios';
+import api from '../utils/api';
 
-export const handleRegister = async () => {
+export const handleRegister = async (credentials) => {
   try {
-    const res = await axios.post('http://localhost:8000/api/register');
+    const res = await api.post('/api/register', credentials);
 
-    if (res.data.success) {
+    if (res.status === 201 || res.data.success) {
       return { success: true, message: 'Successfully registered' };
     }
 
     return { success: false, message: res.data.message };
-  } catch {
-    return { success: false, message: 'Oops something went wrong' };
+  } catch (error) {
+    console.error("Detail Error:", error.response?.data);
+    return { success: false, message: error.response?.data?.message || 'Oops something went wrong' };
+  }
+}
+
+export const handleLogin = async (credentials, loginFunction) => {
+  try {
+    const user = await loginFunction(credentials)
+
+    return user
+  } catch (error) {
+    console.error('Failed to login!!')
+    throw error
   }
 }

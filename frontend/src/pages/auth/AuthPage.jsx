@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import font from '../../assets/image/logo/logo_font_rasanusantara-no-bg.png'
+import font from '../../assets/image/logo/logo_font_rasanusantara-no-bg.png';
+import { handleRegister, handleLogin } from '../../service/AuthService';
+import { useLogin } from '../../context/AuthContext';
+import axios from 'axios';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,18 +12,39 @@ const AuthPage = () => {
     password: '',
     name: ''
   });
+  const [disabled, setDisabled] = useState(false)
   const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Logika autentikasi kamu di sini
-    console.log("Form submitted:", formData);
-    navigate('/'); // Redirect ke menu setelah sukses
-  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const { login } = useLogin()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // get the cookie from backend
+    await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+
+    try {
+      if (isLogin) {
+        setDisabled(true)
+        const res = await handleLogin(formData, login)
+        if (res.success) navigate('/')
+      } else {
+        setDisabled(true)
+        const res = await handleRegister(formData)
+        console.log(res)
+        if (res.success) {
+          setIsLogin(true)
+          alert(res.message)
+        }
+      }
+    } catch (err) {
+      console.error("Auth error:", err)
+    } finally {
+      setDisabled(false)
+    }
+  }
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-4 py-12">
@@ -29,7 +53,7 @@ const AuthPage = () => {
         {/* Header Tema Orange */}
         <div className="bg-orange-600 py-8 px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-2">
-            <span>Join</span>
+            <span>{isLogin ? 'Welcome Back!!' : "Let's Join"}</span>
             <img src={font} alt="fontLogo" className='w-50 h-auto mx-auto mt-2'/>
           </h2>
         </div>
@@ -60,7 +84,7 @@ const AuthPage = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 placeholder="name@example.com"
                 onChange={handleChange}
-              />
+                />
             </div>
 
             <div>
@@ -72,12 +96,27 @@ const AuthPage = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 placeholder="••••••••"
                 onChange={handleChange}
-              />
+                />
             </div>
+
+            {!isLogin && (
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Confirm Password</label>
+                <input
+                  type="password_confirmation"
+                  name="password_confirmation"
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+                  placeholder="••••••••"
+                  onChange={handleChange}
+                  />
+              </div>
+            )}
 
             <button
               type="submit"
               className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-[0.98]"
+              disabled={disabled}
             >
               {isLogin ? 'Sign In' : 'Create Account'}
             </button>
