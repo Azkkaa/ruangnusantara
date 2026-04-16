@@ -44,4 +44,4 @@
 
 ## Stable version of online ordering based application (Rasa Nusantara)
 ## &#9745; List MVP Done
-## &#9744; Auth System
+## &#9745; Auth System
