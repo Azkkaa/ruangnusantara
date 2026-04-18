@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import OrderCard from '../components/OrderCard';
 import Dropdown from '../components/ToggleDropdown';
 
@@ -21,7 +21,7 @@ const AdminPage = () => {
   useEffect(() => {
     const handleRequest = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/admin/orders')
+        const res = await api.get('api/admin/orders')
   
         setOrders(res.data.resources)
         setStatus(res.data.total_orders)
@@ -46,7 +46,7 @@ const AdminPage = () => {
   }
 
   const handleStatus = async () => {
-    const res = await axios.get('http://localhost:8000/api/admin/order-status');
+    const res = await api.get('/api/admin/order-status');
 
     const updateStatus = {
       pending: res.data.pending,

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SpinnerGapIcon } from '@phosphor-icons/react';
 import font from '../../assets/image/logo/logo_font_rasanusantara-no-bg.png';
 import { handleRegister, handleLogin } from '../../service/AuthService';
 import { useLogin } from '../../context/AuthContext';
-import axios from 'axios';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,16 +22,13 @@ const AuthPage = () => {
   const { login } = useLogin()
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // get the cookie from backend
-    await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+    setDisabled(true)
 
     try {
       if (isLogin) {
-        setDisabled(true)
         const res = await handleLogin(formData, login)
         if (res.success) navigate('/')
       } else {
-        setDisabled(true)
         const res = await handleRegister(formData)
         console.log(res)
         if (res.success) {
@@ -115,10 +112,11 @@ const AuthPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-[0.98]"
+              className="w-full bg-orange-700 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-[0.98] disabled:bg-gray-700 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               disabled={disabled}
             >
-              {isLogin ? 'Sign In' : 'Create Account'}
+              {disabled ? <SpinnerGapIcon size={23} weight='bold' className='animate-spin'/> : ''}
+              <span>{isLogin ? 'Sign In' : 'Create Account'}</span>
             </button>
           </form>
 

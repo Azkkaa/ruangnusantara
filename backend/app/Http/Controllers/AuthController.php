@@ -53,7 +53,8 @@ class AuthController extends Controller
                 $request->session()->regenerate();
                 return response()->json([
                     'success' => true,
-                    'message' => 'Berhasil Login!!'
+                    'message' => 'Berhasil Login!!',
+                    'user' => $request->user()
                 ], 200);
             }
 
@@ -70,8 +71,25 @@ class AuthController extends Controller
         }
     }
 
-    public function logout ()
+    public function logout (Request $request)
     {
+        try {
+            Auth::guard('web')->logout();
 
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil keluar, token telah dihapus.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to Logout',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

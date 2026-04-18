@@ -8,8 +8,6 @@ const Header = () => {
   const { getCartItemsCount } = useCart();
   const { user } = useLogin()
 
-  console.log(user)
-
   return (
     <header className="bg-orange-600 text-white shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -35,9 +33,15 @@ const Header = () => {
             <Link to="/admin/orders" className="hover:text-orange-100 transition font-medium">
               Admin
             </Link>
-            <Link to="/auth" className="hover:text-orange-100 transition font-medium">
-              Login/Register
-            </Link>
+            {!user ? (
+              <Link to="/auth" className="hover:text-orange-100 transition font-medium">
+                Login/Register
+              </Link>
+            ) : (
+              <Link to="/profile" className="hover:text-orange-100 transition font-medium">
+                Profile
+              </Link>
+            )}
           </nav>
         </div>
       </div>

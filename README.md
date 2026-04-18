@@ -23,7 +23,7 @@
 - [x] Setup Laravel Sanctum
 - [x] Register API
 - [x] Login API
-- [ ] Logout API
+- [x] Logout API
 - [x] Get current user (profile)
 - [x] Integrate auth with frontend (React)
 - [x] Store token in frontend ( cookie)
@@ -32,13 +32,14 @@
 
 ## Authorization (Admin Role)
 - [x] Add role column in users table (admin / user)
-- [ ] Restrict admin routes using middleware
+- [x] Restrict admin routes using middleware
 - [ ] Protect endpoints:
-    - [ ] GET /admin/orders
+    - [x] GET /admin/orders
     - [ ] GET /admin/orders/{id}
+    - [x] GET /user
     - [ ] PATCH /orders/{id}/status
-- [ ] Create admin middleware (check role === admin)
-- [ ] (Optional) Seed default admin user
+- [x] Create admin middleware (check role === admin)
+- [x] (Optional) Seed default admin user
 
 ---
 

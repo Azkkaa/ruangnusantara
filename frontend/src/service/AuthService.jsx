@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import api from '../utils/api';
 
 export const handleRegister = async (credentials) => {
@@ -23,5 +24,17 @@ export const handleLogin = async (credentials, loginFunction) => {
   } catch (error) {
     console.error('Failed to login!!')
     throw error
+  }
+}
+
+export const handleLogout = async () => {
+  try {
+    const res = await api.post('/api/logout')
+
+    alert(res.data.message)
+    return <Navigate to="/" />
+  } catch (err) {
+    console.error("Failed to logout:", err);
+    throw err;
   }
 }

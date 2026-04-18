@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../utils/api'
+import Loading from '../components/Loading';
 
 const LoginContext = createContext();
 
@@ -15,6 +16,7 @@ export const useLogin = () => {
 
 export const LoginProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -30,6 +32,8 @@ export const LoginProvider = ({ children }) => {
         setUser(res.data)
       } catch {
         setUser(null)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -40,19 +44,28 @@ export const LoginProvider = ({ children }) => {
     try {
       const res = await api.post('/api/login', credentials)
 
-      setUser(res.data)
+      setUser(res.data.user)
       return res.data
     } catch (e) {
       console.error('Failed to login:', e);
       throw e
+    } finally {
+      setLoading(false)
     }
   }
 
   const value = {
     user,
+    setUser,
     login,
     isAuthenticated: !!user
   }
+
+  if (loading) return (
+    <div className='min-h-screen flex justify-center items-center'>
+      <Loading size={65}/>
+    </div>
+  )
 
   return (
     <LoginContext.Provider value={value}>
