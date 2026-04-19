@@ -15,7 +15,11 @@ class UserController extends Controller
     public function order (Request $request)
     {
         try {
-            $userOrder = $request->user()->order()->get();
+            $userOrder = $request->user()
+                ->order()
+                ->whereIn('status', ['pending', 'process'])
+                ->with('orderItem.menu')
+                ->get();
 
             return response()->json([
                 'success' => true,

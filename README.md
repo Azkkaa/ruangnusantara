@@ -26,23 +26,31 @@
 - [x] Logout API
 - [x] Get current user (profile)
 - [x] Integrate auth with frontend (React)
-- [x] Store token in frontend ( cookie)
+- [x] Store token in frontend (cookie)
 
 ---
 
 ## Authorization (Admin Role)
 - [x] Add role column in users table (admin / user)
 - [x] Restrict admin routes using middleware
-- [ ] Protect endpoints:
+- [x] Protect endpoints:
     - [x] GET /admin/orders
-    - [ ] GET /admin/orders/{id}
+    - [x] GET /admin/orders/{id}
     - [x] GET /user
-    - [ ] PATCH /orders/{id}/status
+    - [x] PATCH /orders/{id}/status
 - [x] Create admin middleware (check role === admin)
 - [x] (Optional) Seed default admin user
 
 ---
 
 ## Stable version of online ordering based application (Rasa Nusantara)
-## &#9745; List MVP Done
-## &#9745; Auth System
+### &#9745; List MVP Done
+### &#9745; Auth System
+### &#9745; Page Auth Role
+
+## Future feature in here
+- [ ] Favorite Menu
+- [ ] Item Stock Limit
+- [ ] Reservation Table
+- [ ] Midtrans API Payment
+- [ ] Handling Error
