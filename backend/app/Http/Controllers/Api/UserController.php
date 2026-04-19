@@ -11,4 +11,23 @@ class UserController extends Controller
     {
         return response()->json($request->user());
     }
+
+    public function order (Request $request)
+    {
+        try {
+            $userOrder = $request->user()->order()->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'getting user order',
+                'orders' => $userOrder
+                ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get user order!!',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useLogin } from '../context/AuthContext';
 import axios from 'axios';
 
 const CheckoutPage = () => {
@@ -8,6 +9,7 @@ const CheckoutPage = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const isCheckingOut = useRef(false);
+  const { user } = useLogin()
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -67,6 +69,8 @@ const CheckoutPage = () => {
       navigate('/cart');
     }
   }, [cartItems, navigate])
+
+  if (!user) return <Navigate to="/"/>
 
   return (
     <div className="min-h-screen bg-gray-50">

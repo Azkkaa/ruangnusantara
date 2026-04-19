@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             MenuSeeder::class,
-            AdminSeeder::class
+            AdminSeeder::class,
+            UserSeeder::class
         ]);
     }
 }

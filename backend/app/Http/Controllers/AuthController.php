@@ -82,7 +82,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil keluar, token telah dihapus.'
+                'message' => 'Berhasil Logout!!'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

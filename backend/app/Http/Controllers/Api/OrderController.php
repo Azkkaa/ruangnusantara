@@ -13,12 +13,13 @@ class OrderController extends Controller
     public function store (OrderStoreRequest $request)
     {
         try {
-            $order = DB::transaction(function () use ($request) {
+            $userOrder = DB::transaction(function () use ($request) {
                 // Service
 
                 // this code prevent hacker from manipulate the price
                 // rather than we use data that client sent
                 // we validate the data is right in here using whereIn get
+                $user = $request->user();
                 $itemids = collect($request->items)->pluck('id')->toArray();
                 $items = Menu::whereIn('id', $itemids)->get()->keyBy('id');
 
@@ -39,7 +40,7 @@ class OrderController extends Controller
                 }
 
 
-                $order = Order::create([
+                $userOrder = $user->order()->create([
                     'customer_name' => $request->customerName,
                     'phone' => $request->phone,
                     'notes' => $request->notes,
@@ -47,16 +48,16 @@ class OrderController extends Controller
                     'status' => 'pending'
                 ]);
 
-                $order->orderItem()->createMany($orderItemsCreation);
+                $userOrder->orderItem()->createMany($orderItemsCreation);
 
-                return $order;
+                return $userOrder;
             });
 
             // Response
             return response()->json([
                 'success' => true,
                 'message' => 'Successfully creating order!',
-                'order' => $order
+                'order' => $userOrder
             ]);
         } catch (\Exception $e) {
             return response()->json([

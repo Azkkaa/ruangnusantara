@@ -10,12 +10,11 @@ import {
   SignOut, 
   CaretRight 
 } from '@phosphor-icons/react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const ProfilePage = () => {
   // Data dummy untuk tampilan
   const { user, setUser } = useLogin()
-  const navigate = useNavigate()
 
   const menuItems = [
     { icon: <ShoppingBag size={24} />, label: "Pesanan Saya", sub: "Lihat status pesanan aktif" },

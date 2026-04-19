@@ -45,6 +45,7 @@ export const LoginProvider = ({ children }) => {
       const res = await api.post('/api/login', credentials)
 
       setUser(res.data.user)
+      alert(res.data.message)
       return res.data
     } catch (e) {
       console.error('Failed to login:', e);

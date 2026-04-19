@@ -8,6 +8,8 @@ import SuccessPage from './pages/SuccessPage';
 import ProfilePage from './pages/ProfilePage';
 import AuthPage from './pages/auth/AuthPage';
 import AdminRoute from './pages/AdminRoute';
+import UserRoute from './pages/UserRoute';
+import MyOrderPage from './pages/MyOrderPage';
 
 function App() {
   return (
@@ -21,7 +23,14 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/auth" element={<AuthPage />}/>
-          <Route path="/profile" element={<ProfilePage />}/>
+
+          {/* User Page */}
+          <Route path="/user" element={<UserRoute />}>
+            <Route path="profile" element={<ProfilePage />}/>
+            <Route path="orders" element={<MyOrderPage />} />
+          </Route>
+
+          {/* Admin Page */}
           <Route path="/admin" element={<AdminRoute />}>
             <Route path="orders" element={<AdminPage />} />
           </Route>

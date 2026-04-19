@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
+import api from '../utils/api';
 
 const OrdersContext = createContext();
 
@@ -13,39 +14,22 @@ export const useOrders = () => {
 export const OrdersProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
 
-  const addOrder = (orderData) => {
-    const newOrder = {
-      id: Date.now(),
-      ...orderData,
-      status: 'pending',
-      createdAt: new Date().toISOString()
-    };
-    setOrders(prev => [...prev, newOrder]);
-    return newOrder;
-  };
-
-  const updateOrderStatus = (orderId, newStatus) => {
-    setOrders(prev =>
-      prev.map(order =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
-    );
-  };
-
-  const getNextStatus = (currentStatus) => {
-    const statusFlow = {
-      'pending': 'diproses',
-      'diproses': 'selesai',
-      'selesai': 'selesai'
-    };
-    return statusFlow[currentStatus] || currentStatus;
-  };
+  const getUserOrder = useCallback(async () => {
+    try {
+      const res = await api.get('/api/user/order');
+  
+      setOrders(res.data.orders)
+      return res.data
+    } catch (err) {
+      console.error("Failed to get user order!!", err?.data?.message)
+      alert("Failed to get user order!!")
+      throw err
+    }
+  }, [])
 
   const value = {
-    orders,
-    addOrder,
-    updateOrderStatus,
-    getNextStatus
+    getUserOrder,
+    orders
   };
 
   return (

@@ -19,26 +19,36 @@ const Header = () => {
             </Link>
           </div>
           <nav className="flex gap-6 items-center">
-            <Link to="/" className="hover:text-orange-100 transition font-medium">
+            <Link to="/" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
               Menu
             </Link>
-            <Link to="/cart" className="relative hover:text-orange-100 transition font-medium">
-              Cart
-              {getCartItemsCount() > 0 && (
-                <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                  {getCartItemsCount()}
-                </span> 
-              )}
-            </Link>
-            <Link to="/admin/orders" className="hover:text-orange-100 transition font-medium">
-              Admin
-            </Link>
+            {user ? (
+              <Link to="/cart" className="relative transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
+                Cart
+                {getCartItemsCount() > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {getCartItemsCount()}
+                  </span> 
+                )}
+              </Link>
+            ) : ''}
+            {user ? (
+              <Link to="/user/orders" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
+                My Order
+              </Link>
+            ) : ''}
+            {user?.is_admin ? (
+              <Link to="/admin/orders" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
+                Admin
+              </Link>
+            ) : ''
+            }
             {!user ? (
-              <Link to="/auth" className="hover:text-orange-100 transition font-medium">
+              <Link to="/auth" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
                 Login/Register
               </Link>
             ) : (
-              <Link to="/profile" className="hover:text-orange-100 transition font-medium">
+              <Link to="/profile" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
                 Profile
               </Link>
             )}

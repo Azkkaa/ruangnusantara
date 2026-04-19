@@ -19,7 +19,12 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [UserController::class, 'index']);
+    Route::prefix('/user')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+
+        // My Order
+        Route::get('order', [UserController::class, 'order']);
+    });
 });
 
 // Auth

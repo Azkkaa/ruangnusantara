@@ -17,6 +17,11 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
 
+    public function order ()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *
