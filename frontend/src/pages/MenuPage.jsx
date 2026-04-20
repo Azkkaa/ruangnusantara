@@ -47,23 +47,9 @@ const MenuPage = () => {
   return (
     <main className="min-h-screen bg-gray-50/50">
       {/* Hero Section */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="container mx-auto px-6 pt-12 pb-7 flex flex-col items-center">
-          <img 
-            src={fullLogoNobg} 
-            alt="Rasa Nusantara" 
-            className='w-48 h-auto mb-6 drop-shadow-sm'
-          />
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
-              Selamat Datang
-            </h1>
-          </div>
-        </div>
-      </div>
 
       {/* Menu Grid */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-10">
           <h2 className="text-2xl font-bold text-gray-800 relative inline-block border-b-2 border-orange-600">
             Daftar Menu
@@ -81,7 +67,14 @@ const MenuPage = () => {
       </div>
       
       {/* Footer Simple */}
-      <footer className="py-12 text-center text-gray-400 text-sm">
+      <footer className="py-10 text-center text-gray-700 text-sm">
+        <div className="mx-auto flex flex-col items-center">
+          <img 
+            src={fullLogoNobg} 
+            alt="logo_rasanusantara" 
+            className='w-48 h-auto mb-6 drop-shadow-sm'
+          />
+        </div>
         <p>&copy; {new Date().getFullYear()} Rasa Nusantara. All rights reserved.</p>
       </footer>
     </main>

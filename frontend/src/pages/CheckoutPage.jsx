@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useLogin } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../utils/api'
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const CheckoutPage = () => {
 
     try {
       setLoading(true)
-      const res = await axios.post('http://localhost:8000/api/orders', orderData)
+      const res = await api.post('/api/order', orderData)
 
       if (res.data.success) {
         isCheckingOut.current = true;

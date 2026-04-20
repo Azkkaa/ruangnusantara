@@ -10,15 +10,15 @@ import {
   SignOut, 
   CaretRight 
 } from '@phosphor-icons/react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 const ProfilePage = () => {
   // Data dummy untuk tampilan
   const { user, setUser } = useLogin()
 
   const menuItems = [
-    { icon: <ShoppingBag size={24} />, label: "Pesanan Saya", sub: "Lihat status pesanan aktif" },
-    { icon: <Heart size={24} />, label: "Favorit", sub: "Menu yang kamu simpan" },
+    { icon: <ShoppingBag size={24} />, label: "Pesanan Saya", sub: "Lihat status pesanan aktif", to:"/user/orders"},
+    { icon: <Heart size={24} />, label: "Favorit", sub: "Menu yang kamu simpan", to:"/user/favorite" },
   ];
 
   if (!user) return <Navigate to="/" />
@@ -44,7 +44,8 @@ const ProfilePage = () => {
         
         <div className="space-y-3">
           {menuItems.map((item, index) => (
-            <button 
+            <Link
+              to={item.to}
               key={index}
               className="w-full flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm hover:bg-orange-50 transition-colors duration-200 group"
             >
@@ -58,7 +59,7 @@ const ProfilePage = () => {
                 </div>
               </div>
               <CaretRight size={18} weight="bold" className="text-gray-400" />
-            </button>
+            </Link>
           ))}
         </div>
 

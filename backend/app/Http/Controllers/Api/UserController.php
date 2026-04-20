@@ -17,7 +17,6 @@ class UserController extends Controller
         try {
             $userOrder = $request->user()
                 ->order()
-                ->whereIn('status', ['pending', 'process'])
                 ->with('orderItem.menu')
                 ->get();
 

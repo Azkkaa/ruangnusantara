@@ -53,15 +53,17 @@ class AuthController extends Controller
                 $request->session()->regenerate();
                 return response()->json([
                     'success' => true,
+                    'login_status' => true,
                     'message' => 'Berhasil Login!!',
                     'user' => $request->user()
                 ], 200);
             }
 
             return response()->json([
-                'success' => false,
-                'message' => 'Data not match!!'
-            ], 401);
+                'success' => true,
+                'login_status' => false,
+                'message' => 'Data yang anda masukkan tidak sesuai!!'
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

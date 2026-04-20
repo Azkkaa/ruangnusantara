@@ -49,6 +49,7 @@
 ### &#9745; Page Auth Role
 
 ## Future feature in here
+- [x] Get User Order (Page for users to view their complete order) -- Finish = 22:40 WIB 20-04-2026 --
 - [ ] Favorite Menu
 - [ ] Item Stock Limit
 - [ ] Reservation Table

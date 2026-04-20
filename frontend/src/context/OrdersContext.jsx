@@ -16,7 +16,7 @@ export const OrdersProvider = ({ children }) => {
 
   const getUserOrder = useCallback(async () => {
     try {
-      const res = await api.get('/api/user/order');
+      const res = await api.get('/api/user/orders');
   
       setOrders(res.data.orders)
       return res.data

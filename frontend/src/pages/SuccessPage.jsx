@@ -44,7 +44,7 @@ const SuccessPage = () => {
             Back to Menu
           </button>
           <button
-            onClick={() => navigate('/admin')}
+            onClick={() => navigate('/user/orders')}
             className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
           >
             View Order Status

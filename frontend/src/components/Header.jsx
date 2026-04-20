@@ -22,7 +22,7 @@ const Header = () => {
             <Link to="/" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
               Menu
             </Link>
-            {user ? (
+            {user && !user?.is_admin ? (
               <Link to="/cart" className="relative transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
                 Cart
                 {getCartItemsCount() > 0 && (
@@ -32,7 +32,7 @@ const Header = () => {
                 )}
               </Link>
             ) : ''}
-            {user ? (
+            {user && !user?.is_admin ? (
               <Link to="/user/orders" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
                 My Order
               </Link>
@@ -43,12 +43,12 @@ const Header = () => {
               </Link>
             ) : ''
             }
-            {!user ? (
+            {!user && !user?.is_admin ? (
               <Link to="/auth" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
                 Login/Register
               </Link>
             ) : (
-              <Link to="/profile" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
+              <Link to="/user/profile" className="transition font-medium hover:bg-orange-700 px-1 rounded py-0.5">
                 Profile
               </Link>
             )}

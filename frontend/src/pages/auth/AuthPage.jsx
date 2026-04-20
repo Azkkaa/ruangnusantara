@@ -27,7 +27,14 @@ const AuthPage = () => {
     try {
       if (isLogin) {
         const res = await handleLogin(formData, login)
-        if (res.success) navigate('/')
+        if (res.success) {
+          if (res.login_status) {
+            navigate('/')
+            alert(res.message)
+          } else {
+            alert(res.message)
+          }
+        }
       } else {
         const res = await handleRegister(formData)
         console.log(res)

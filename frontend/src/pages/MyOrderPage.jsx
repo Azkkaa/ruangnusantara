@@ -1,77 +1,135 @@
 import { useEffect, useState } from 'react';
-import { useOrders, OrdersProvider } from '../context/OrdersContext';
-import { HandCoinsIcon } from '@phosphor-icons/react';
+import { useOrders } from '../context/OrdersContext';
+import { 
+  Package, 
+  ClockCounterClockwise, 
+  ShoppingBag, 
+  CheckCircle,
+  Timer,
+  CircleNotch 
+} from '@phosphor-icons/react';
+import OrderItemCard from '../components/OrderItemCard';
 
 const MyOrderPage = () => {
-    const { orders, getUserOrder } = useOrders();
-    const [loading, setLoading] = useState(true);
+  const { orders, getUserOrder } = useOrders();
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('ongoing');
 
-    useEffect(() => {
-      const handleRequest = async () => {
-        await getUserOrder()
-        setLoading(false)
+  useEffect(() => {
+    const handleRequest = async () => {
+      try {
+        await getUserOrder();
+      } finally {
+        setLoading(false);
       }
+    };
+    handleRequest();
+  }, [getUserOrder]);
 
-      handleRequest()
-    }, [getUserOrder])
+  // Filter Data
+  const ongoingOrders = orders.filter(o => o.status === 'pending' || o.status === 'process');
+  const completedOrders = orders.filter(o => o.status === 'completed');
 
-    if (loading) {
-        return <div className="text-center py-10">Memuat pesanan...</div>;
-    }
-
+  if (loading) {
     return (
-      <OrdersProvider>
-        <div className="max-w-4xl mx-auto p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Riwayat Pesanan - RasaNusantara</h2>
-            
-            {orders.length === 0 ? (
-                <div className="bg-yellow-50 p-4 rounded-lg text-yellow-700">
-                    Kamu belum memiliki pesanan. Yuk, mulai pesan makanan!
-                </div>
-            ) : (
-                <div className="space-y-4">
-                    {orders.map((order) => (
-                        <div key={order.id} className="border rounded-xl p-5 shadow-sm bg-white hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <p className="text-sm text-gray-500">No. Pesanan: <span className="font-mono font-medium text-gray-700">#{order.order_number}</span></p>
-                                    <p className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-                                </div>
-                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(order.status)}`}>
-                                    {order.status.toUpperCase()}
-                                </span>
-                            </div>
-
-                            <div className="border-t border-b py-3 my-3">
-                                {order.items.map((item) => (
-                                    <div key={item.id} className="flex justify-between text-sm py-1">
-                                        <span>{item.quantity}x {item.product_name}</span>
-                                        <span className="font-medium">Rp {item.price.toLocaleString('id-ID')}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="flex justify-between items-center mt-2">
-                                <p className="text-gray-600 font-semibold">Total Pembayaran</p>
-                                <p className="text-orange-600 font-bold text-lg">Rp {order.total_amount.toLocaleString('id-ID')}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-      </OrdersProvider>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <CircleNotch size={40} className="animate-spin text-orange-500" />
+        <p className="text-gray-500 font-medium font-sans">Menyiapkan pesananmu...</p>
+      </div>
     );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 min-h-screen font-sans">
+      {/* Header */}
+      <div className="mb-8">
+        <h2 className="text-3xl font-extrabold text-gray-900 flex items-center gap-3">
+          <ClockCounterClockwise size={32} className="text-orange-500" />
+          Pesanan Saya
+        </h2>
+        <p className="text-gray-500 mt-1">Kelola dan pantau pesanan kuliner Nusantara kamu.</p>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="flex border-b border-gray-200 mb-6 bg-white sticky top-0 z-10">
+        <button
+          onClick={() => setActiveTab('ongoing')}
+          className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-bold transition-all border-b-2 ${
+            activeTab === 'ongoing' 
+            ? 'border-orange-500 text-orange-600' 
+            : 'border-transparent text-gray-400 hover:text-gray-600'
+          }`}
+        >
+          <Timer size={20} weight={activeTab === 'ongoing' ? "fill" : "regular"} />
+          Berjalan ({ongoingOrders.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('completed')}
+          className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-bold transition-all border-b-2 ${
+            activeTab === 'completed' 
+            ? 'border-orange-500 text-orange-600' 
+            : 'border-transparent text-gray-400 hover:text-gray-600'
+          }`}
+        >
+          <CheckCircle size={20} weight={activeTab === 'completed' ? "fill" : "regular"} />
+          Selesai ({completedOrders.length})
+        </button>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="min-h-100">
+        {activeTab === 'ongoing' ? (
+          // View: Transaksi Berjalan
+          ongoingOrders.length === 0 ? (
+            <EmptyState 
+              title="Tidak ada pesanan berjalan" 
+              desc="Semua pesananmu sudah sampai atau belum dipesan sama sekali."
+            />
+          ) : (
+            <div className="space-y-4 animate-fadeIn">
+              <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest px-2 mb-2">
+                <Package size={16} /> Daftar Transaksi Berjalan
+              </div>
+              {ongoingOrders.map((order) => (
+                <OrderItemCard key={order.id} order={order} />
+              ))}
+            </div>
+          )
+        ) : (
+          // View: Transaksi Selesai
+          completedOrders.length === 0 ? (
+            <EmptyState 
+              title="Belum ada riwayat" 
+              desc="Selesaikan pesananmu untuk melihat daftar riwayat transaksi di sini."
+            />
+          ) : (
+            <div className="space-y-4 animate-fadeIn">
+              <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest px-2 mb-2">
+                <CheckCircle size={16} /> Daftar Transaksi Selesai
+              </div>
+              {completedOrders.map((order) => (
+                <OrderItemCard key={order.id} order={order} />
+              ))}
+            </div>
+          )
+        )}
+      </div>
+
+      <p className="text-center text-gray-400 text-xs mt-12 pb-8">
+        Butuh bantuan? <span className="text-orange-500 cursor-pointer underline">Hubungi CS RasaNusantara</span>
+      </p>
+    </div>
+  );
 };
 
-// Helper untuk styling status
-const getStatusStyle = (status) => {
-    switch (status) {
-        case 'pending': return 'bg-yellow-100 text-yellow-700';
-        case 'paid': return 'bg-green-100 text-green-700';
-        case 'cancelled': return 'bg-red-100 text-red-700';
-        default: return 'bg-gray-100 text-gray-700';
-    }
-};
+const EmptyState = ({ title, desc }) => (
+  <div className="bg-white border-2 border-dashed border-gray-200 rounded-3xl p-12 text-center my-4">
+    <div className="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+      <ShoppingBag size={32} />
+    </div>
+    <h3 className="text-lg font-bold text-gray-800">{title}</h3>
+    <p className="text-sm text-gray-500 mt-2 max-w-xs mx-auto">{desc}</p>
+  </div>
+);
 
 export default MyOrderPage;

@@ -13,7 +13,7 @@ class OrderController extends Controller
     {
         try {
             $orders = Order::with('orderItem.menu')
-                ->where('status', ['pending', 'process'])
+                ->whereIn('status', ['pending', 'process'])
                 ->get();
 
             $orderStatus = Order::pluck('status');

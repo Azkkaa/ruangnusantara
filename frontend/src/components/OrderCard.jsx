@@ -1,53 +1,29 @@
-import axios from 'axios';
 import { useState } from 'react';
+import api from '../utils/api';
+import { SpinnerGapIcon } from '@phosphor-icons/react';
+import { formatCurrency, formatDate, getStatusColor } from '../utils/helper'
 
 const OrderCard = ({ order, updateNumStatus }) => {
   const [status, setStatus] = useState(order.status)
-  const [isProcess, setIsProcess] = useState(false)
-
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(price);
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString('id-ID', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getStatusColor = (status) => {
-    const colors = {
-      'pending': 'bg-yellow-100 text-yellow-800 border-yellow-300',
-      'process': 'bg-blue-100 text-blue-800 border-blue-300',
-      'completed': 'bg-green-100 text-green-800 border-green-300'
-    };
-    return colors[status] || 'bg-gray-100 text-gray-800 border-gray-300';
-  };
+  const [disabled, setDisabled] = useState(false)
 
   const handleUpdateStatus = async (id, newStatus) => {
     try {
-      setIsProcess(true)
-      const res = await axios.patch(`http://localhost:8000/api/admin/orders/${id}/status`, {
+      setDisabled(true)
+      const res = await api.patch(`http://localhost:8000/api/admin/orders/${id}/status`, {
         status: newStatus
       })
-  
+
       if (res.data.success) {
         alert('Menu item status successfully updated!')
         setStatus(res.data.order.status)
-        setIsProcess(false)
         updateNumStatus()
       }
     } catch (e) {
       console.error("Gagal update status:", e.response?.data?.message);
-      alert('Gagal Update Status')
+      alert('Gagal Update Status!!')
+    } finally {
+      setDisabled(false)
     }
   };
 
@@ -77,7 +53,7 @@ const OrderCard = ({ order, updateNumStatus }) => {
               {item.menu.name} x{item.quantity}
             </span>
             <span className="text-gray-900 font-medium">
-              {formatPrice(item.price * item.quantity)}
+              {formatCurrency(item.price * item.quantity)}
             </span>
           </div>
         ))}
@@ -86,17 +62,18 @@ const OrderCard = ({ order, updateNumStatus }) => {
       <div className="flex justify-between items-center pt-3 border-t border-gray-200">
         <div>
           <p className="text-sm text-gray-600">Total</p>
-          <p className="text-2xl font-bold text-orange-600">{formatPrice(order.total_price)}</p>
+          <p className="text-xl font-bold text-orange-600">{formatCurrency(order.total_price)}</p>
         </div>
         {status !== 'completed' && (
           <button
             onClick={() => {
               handleUpdateStatus(order.id, status === 'process' ? 'completed' : 'process')
             }}
-            disabled={isProcess}
-            className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors duration-200 disabled:bg-gray-600 disabled:hover:bg-gray-700"
+            disabled={disabled}
+            className="bg-orange-600 text-white px-3 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors duration-200 disabled:bg-gray-700 disabled:cursor-not-allowed flex gap-1"
           >
-            Update Status
+            {disabled ? <SpinnerGapIcon size={23} weight='bold' className='animate-spin'/> : ''}
+            <span>{disabled ? 'Process' : 'Update Status'}</span>
           </button>
         )}
       </div>

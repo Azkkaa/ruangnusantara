@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/menus', [MenuController::class, 'index']);
-Route::post('/orders', [OrderController::class, 'store']);
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function () {
     Route::get('/orders', [AdminOrderController::class, 'index']);
@@ -16,15 +15,17 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function
     Route::get('/order-status', [AdminOrderController::class, 'statusOrder']);
 
     Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
-});
+    });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/', [UserController::class, 'index']);
 
         // My Order
-        Route::get('order', [UserController::class, 'order']);
+        Route::get('orders', [UserController::class, 'order']);
     });
+
+    Route::post('/order', [OrderController::class, 'store']);
 });
 
 // Auth
