@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import { useLogin } from '../context/AuthContext';
-import api from '../utils/api'
+import { useCart } from '@context/CartContext';
+import { useLogin } from '@context/AuthContext';
+import api from '@utils/api'
+import { formatCurrency } from '@utils/helper'
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -16,14 +17,6 @@ const CheckoutPage = () => {
     phone: '',
     notes: ''
   });
-
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(price);
-  };
 
   const handleChange = (e) => {
     setFormData({
@@ -149,14 +142,14 @@ const CheckoutPage = () => {
                       {item.name} x{item.quantity}
                     </span>
                     <span className="text-gray-900 font-medium">
-                      {formatPrice(item.price * item.quantity)}
+                      {formatCurrency(item.price * item.quantity)}
                     </span>
                   </div>
                 ))}
                 <div className="border-t border-gray-200 pt-3 mt-3">
                   <div className="flex justify-between text-xl font-bold text-gray-800">
                     <span>Total</span>
-                    <span className="text-orange-600">{formatPrice(getCartTotal())}</span>
+                    <span className="text-orange-600">{formatCurrency(getCartTotal())}</span>
                   </div>
                 </div>
               </div>

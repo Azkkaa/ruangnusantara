@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import MenuItem from '../components/MenuItem';
+import MenuItem from '@components/MenuItem';
 import axios from 'axios';
-import Loading from '../components/Loading';
-import fullLogoNobg from '../assets/image/logo/full_logo_rasanusantara-no-bg.png';
+import Loading from '@components/Loading';
+import fullLogoNobg from '@assets/image/logo/full_logo_rasanusantara-no-bg.png';
 
 const MenuPage = () => {
   const [error, setError] = useState(false);
@@ -46,8 +46,6 @@ const MenuPage = () => {
 
   return (
     <main className="min-h-screen bg-gray-50/50">
-      {/* Hero Section */}
-
       {/* Menu Grid */}
       <div className="container mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-10">
@@ -59,13 +57,13 @@ const MenuPage = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {datas.map(item => (
-            <div key={item.id} className="transform transition duration-300 hover:-translate-y-2">
+            <div key={item.id} className="transform transition duration-300">
               <MenuItem item={item} />
             </div>
           ))}
         </div>
       </div>
-      
+
       {/* Footer Simple */}
       <footer className="py-10 text-center text-gray-700 text-sm">
         <div className="mx-auto flex flex-col items-center">

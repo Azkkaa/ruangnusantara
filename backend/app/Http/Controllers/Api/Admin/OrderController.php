@@ -56,7 +56,9 @@ class OrderController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => $e->getMessage()
+                'success' => false,
+                'message' => 'Internal Server Error!!',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -78,7 +80,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update status!',
+                'message' => 'Internal Server Error!!',
                 'Error' => $e->getMessage()
             ], 500);
         }
@@ -97,7 +99,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to get status',
+                'message' => 'Internal Server Error!!',
                 'error' => $e->getMessage()
             ], 500);
         }

@@ -13,7 +13,7 @@ class MenuController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'menu list',
+            'message' => 'Getting menu list',
             'resources' => $menus
         ], 200);
     }

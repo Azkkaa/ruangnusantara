@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,8 +55,8 @@ class AuthController extends Controller
                 return response()->json([
                     'success' => true,
                     'login_status' => true,
-                    'message' => 'Berhasil Login!!',
-                    'user' => $request->user()
+                    'message' => 'Anda Berhasil Login',
+                    'user' => new UserResource($request->user()->load('favorites'))
                 ], 200);
             }
 

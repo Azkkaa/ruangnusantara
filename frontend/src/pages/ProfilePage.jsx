@@ -1,6 +1,6 @@
 import React from 'react';
-import { useLogin } from '../context/AuthContext';
-import { handleLogout } from '../service/AuthService';
+import { useLogin } from '@context/AuthContext';
+import { handleLogout } from '@service/AuthService';
 import { 
   User, 
   ShoppingBag, 
@@ -66,8 +66,13 @@ const ProfilePage = () => {
         {/* Logout Button */}
         <button
           onClick={async () => {
-            await handleLogout()
-            setUser(null)
+            const res = await handleLogout()
+            if (res.success) {
+              alert(res.message)
+              setUser(null)
+            } else {
+              alert('Something went wrong!!')
+            }
           }}
           className="w-full flex items-center gap-4 p-4 mt-8 bg-red-50 text-red-600 rounded-2xl hover:bg-red-100 transition-colors duration-200"
         >

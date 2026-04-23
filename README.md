@@ -50,7 +50,7 @@
 
 ## Future feature in here
 - [x] Get User Order (Page for users to view their complete order) -- Finish = 22:40 WIB 20-04-2026 --
-- [ ] Favorite Menu
+- [x] Favorite Menu (User can add favorite menu item to their favorite list) -- Finish = 19:43 23-04-2026 --
 - [ ] Item Stock Limit
 - [ ] Reservation Table
 - [ ] Midtrans API Payment

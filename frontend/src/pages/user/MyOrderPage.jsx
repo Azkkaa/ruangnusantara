@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOrders } from '../context/OrdersContext';
+import { useOrders } from '@context/OrdersContext';
 import { 
   Package, 
   ClockCounterClockwise, 
@@ -8,7 +8,7 @@ import {
   Timer,
   CircleNotch 
 } from '@phosphor-icons/react';
-import OrderItemCard from '../components/OrderItemCard';
+import OrderItemCard from '@components/OrderItemCard';
 
 const MyOrderPage = () => {
   const { orders, getUserOrder } = useOrders();

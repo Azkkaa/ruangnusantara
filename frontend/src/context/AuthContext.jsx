@@ -2,6 +2,7 @@ import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../utils/api'
 import Loading from '../components/Loading';
+import { logoFontRSNobg } from '@assets'
 
 const LoginContext = createContext();
 
@@ -29,7 +30,7 @@ export const LoginProvider = ({ children }) => {
 
       try {
         const res = await api.get('api/user')
-        setUser(res.data)
+        setUser(res.data.data)
       } catch {
         setUser(null)
       } finally {
@@ -61,11 +62,33 @@ export const LoginProvider = ({ children }) => {
     isAuthenticated: !!user
   }
 
-  if (loading) return (
-    <div className='min-h-screen flex justify-center items-center'>
-      <Loading size={65}/>
-    </div>
-  )
+  if (loading) {
+    return (
+      <div className="min-h-screen w-full flex flex-col justify-center items-center bg-[#f8f9fa]">
+        <div className="flex flex-col items-center">
+          {/* Container Spinner & Icon/Logo */}
+          <div className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-400-100 border border-orange-50 flex flex-col items-center gap-2">
+            <div>
+              <Loading size={60} color="#f97316" /> 
+            </div>
+
+            <div className="text-center flex flex-col items-center justify-center">
+              <div className='mb-3'>
+                <img src={logoFontRSNobg} alt="Logo" className='w-28'/>
+              </div>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-1">
+                Wait for a moment
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute bottom-10 animate-pulse text-gray-400 text-xs font-medium">
+          Getting user data...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <LoginContext.Provider value={value}>

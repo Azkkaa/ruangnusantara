@@ -12,4 +12,9 @@ class Menu extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function favoriteByUsers ()
+    {
+        return $this->belongsToMany(User::class, 'favorite_menus');
+    }
 }

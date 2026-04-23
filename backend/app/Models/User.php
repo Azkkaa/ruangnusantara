@@ -22,6 +22,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id');
     }
 
+    public function favorites ()
+    {
+        return $this->belongsToMany(Menu::class, 'favorite_menus');
+    }
+
     /**
      * Get the attributes that should be cast.
      *
