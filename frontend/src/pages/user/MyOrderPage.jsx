@@ -9,22 +9,27 @@ import {
   CircleNotch 
 } from '@phosphor-icons/react';
 import OrderItemCard from '@components/OrderItemCard';
+import { useToast } from '@context/ToastContext';
 
 const MyOrderPage = () => {
   const { orders, getUserOrder } = useOrders();
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('ongoing');
+  const { showToast } = useToast()
 
   useEffect(() => {
     const handleRequest = async () => {
       try {
         await getUserOrder();
+      } catch (err) {
+        const errorMessage = err?.response?.data?.message || "Gagal mengambil data pesanan. Periksa koneksi Anda."
+        showToast(errorMessage, 'failed')
       } finally {
         setLoading(false);
       }
     };
     handleRequest();
-  }, [getUserOrder]);
+  }, [getUserOrder, showToast]);
 
   // Filter Data
   const ongoingOrders = orders.filter(o => o.status === 'pending' || o.status === 'process');

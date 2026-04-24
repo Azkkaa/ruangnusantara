@@ -17,12 +17,11 @@ export const OrdersProvider = ({ children }) => {
   const getUserOrder = useCallback(async () => {
     try {
       const res = await api.get('/api/user/orders');
-  
+
       setOrders(res.data.orders)
       return res.data
     } catch (err) {
-      console.error("Failed to get user order!!", err?.data?.message)
-      alert("Failed to get user order!!")
+      console.error("Failed to get user order:", err?.response?.data?.message)
       throw err
     }
   }, [])

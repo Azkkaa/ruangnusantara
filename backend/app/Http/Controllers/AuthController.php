@@ -30,13 +30,12 @@ class AuthController extends Controller
 
             return response()->json([
                     'success' => true,
-                    'massage' => 'Sucessfully creating user',
-                    'user' => $user
+                    'massage' => 'User berhasil dibuat'
                 ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'massage' => 'Failed to Register!!',
+                'massage' => 'Internal Server Error!!',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -63,12 +62,12 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'login_status' => false,
-                'message' => 'Data yang anda masukkan tidak sesuai!!'
+                'message' => 'Email atau Password anda salah!!'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to login!!',
+                'message' => 'Internal server error!!',
                 'error' => $e->getMessage()
             ]);
         }
@@ -90,7 +89,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to Logout',
+                'message' => 'Internal Server Error!!',
                 'error' => $e->getMessage()
             ]);
         }

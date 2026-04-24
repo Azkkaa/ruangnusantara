@@ -43,14 +43,14 @@ class FavoriteController extends Controller
             return response()->json([
                 'success' => true,
                 'is_favorite' => $isAttached,
-                'message' => $isAttached ? 'Added to favorites' : 'Removed from favorites',
+                'message' => $isAttached ? 'Menu ditambahkan ke favorit' : 'Menu dihapus dari favorit',
             ]);
         } catch (ModelNotFoundException $e) {
             // this class exception is usefull for find some data
             // this model use keyword OrFail eloquent for exception
             // ex: where('email', ...)->firstOrfail();
             return response()->json([
-                'message' => "Menu item not found!",
+                'message' => "Menu item tidak ditemukan!",
                 'success' => false
             ]);
         } catch (\Exception $e) {

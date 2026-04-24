@@ -11,10 +11,11 @@ import {
   CaretRight 
 } from '@phosphor-icons/react';
 import { Link, Navigate } from 'react-router-dom';
+import { useToast } from '@context/ToastContext';
 
 const ProfilePage = () => {
-  // Data dummy untuk tampilan
   const { user, setUser } = useLogin()
+  const { showToast } = useToast()
 
   const menuItems = [
     { icon: <ShoppingBag size={24} />, label: "Pesanan Saya", sub: "Lihat status pesanan aktif", to:"/user/orders"},
@@ -66,12 +67,13 @@ const ProfilePage = () => {
         {/* Logout Button */}
         <button
           onClick={async () => {
-            const res = await handleLogout()
-            if (res.success) {
-              alert(res.message)
+            try {
+              const res = await handleLogout()
+              showToast(res.message)
               setUser(null)
-            } else {
-              alert('Something went wrong!!')
+            } catch (err) {
+              const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi. Periksa Koneksk Anda!"
+              showToast(errorMessage, 'failed')
             }
           }}
           className="w-full flex items-center gap-4 p-4 mt-8 bg-red-50 text-red-600 rounded-2xl hover:bg-red-100 transition-colors duration-200"

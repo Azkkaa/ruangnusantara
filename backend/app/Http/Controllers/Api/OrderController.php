@@ -56,7 +56,7 @@ class OrderController extends Controller
             // Response
             return response()->json([
                 'success' => true,
-                'message' => 'Successfully creating order!',
+                'message' => 'Berhasil Menambahkan Pesanan!',
                 'order' => $userOrder
             ]);
         } catch (\Exception $e) {

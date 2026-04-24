@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SpinnerGapIcon } from '@phosphor-icons/react';
-import font from '../../assets/image/logo/logo_font_rasanusantara-no-bg.png';
-import { handleRegister, handleLogin } from '../../service/AuthService';
-import { useLogin } from '../../context/AuthContext';
+import font from '@assets/image/logo/logo_font_rasanusantara-no-bg.png';
+import { handleRegister, handleLogin } from '@service/AuthService';
+import { useLogin } from '@context/AuthContext';
+import { useToast } from '@context/ToastContext';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +15,7 @@ const AuthPage = () => {
   });
   const [disabled, setDisabled] = useState(false)
   const navigate = useNavigate();
+  const { showToast } = useToast()
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,25 +28,30 @@ const AuthPage = () => {
 
     try {
       if (isLogin) {
-        const res = await handleLogin(formData, login)
-        if (res.success) {
-          if (res.login_status) {
-            navigate('/')
-            alert(res.message)
-          } else {
-            alert(res.message)
+        try {
+          const res = await handleLogin(formData, login)
+          if (res.success) {
+            if (res.login_status) {
+              showToast(res.message)
+              navigate('/')
+            } else {
+              showToast(res.message, 'failed')
+            }
           }
+        } catch (err) {
+          const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi. Periksa koneksi Anda!"
+          showToast(errorMessage, 'failed')
         }
       } else {
         const res = await handleRegister(formData)
-        console.log(res)
         if (res.success) {
           setIsLogin(true)
-          alert(res.message)
+          showToast(res.message)
         }
       }
     } catch (err) {
-      console.error("Auth error:", err)
+      const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi. Periksa koneksi Anda!"
+      showToast(errorMessage, 'failed')
     } finally {
       setDisabled(false)
     }

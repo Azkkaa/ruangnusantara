@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import { useLogin } from './AuthContext';
 import { Navigate } from 'react-router-dom';
+import { useToast } from '@context/ToastContext';
 
 const CartContext = createContext();
 
@@ -15,9 +16,10 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const { user } = useLogin()
+  const { showToast } = useToast()
 
   const addToCart = (item) => {
-    if (!user) return alert('You must login first!!')
+    if (!user) return showToast('You must login first!!')
 
     setCartItems(prev => {
       const existingItem = prev.find(i => i.id === item.id);

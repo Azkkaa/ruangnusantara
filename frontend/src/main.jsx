@@ -5,15 +5,18 @@ import './index.css'
 import { CartProvider } from '@context/CartContext'
 import { OrdersProvider } from '@context/OrdersContext'
 import { LoginProvider } from '@context/AuthContext'
+import { ToastProvider } from '@context/ToastContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <LoginProvider>
-      <CartProvider>
-        <OrdersProvider>
-            <App />
-        </OrdersProvider>
-      </CartProvider>
-    </LoginProvider>
+    <ToastProvider>
+      <LoginProvider>
+        <CartProvider>
+          <OrdersProvider>
+              <App />
+          </OrdersProvider>
+        </CartProvider>
+      </LoginProvider>
+    </ToastProvider>
   </StrictMode>,
 )

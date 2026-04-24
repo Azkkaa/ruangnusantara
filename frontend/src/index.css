@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+  /* 1. Definisikan animasinya menggunakan variabel CSS (--animate-*) */
+  --animate-slide-in-left: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  /* 2. Tuliskan keyframes-nya langsung di dalam block @theme */
+  @keyframes slideInLeft {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
+
 /* Safelisted classes for Order Status 
   tailwindcss-safelist: 
   bg-yellow-100 text-yellow-800 border-yellow-300

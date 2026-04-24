@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import api from '../../utils/api';
-import OrderCard from '../../components/OrderCard';
-import Dropdown from '../../components/ToggleDropdown';
-import { formatCurrency } from '../../utils/helper';
+import api from '@utils/api';
+import OrderCard from '@components/OrderCard';
+import Dropdown from '@components/ToggleDropdown';
+import { formatCurrency } from '@utils/helper';
 import { 
   ChartBar, 
   TrendUp, 
@@ -13,6 +13,7 @@ import {
   Empty,
   Wallet 
 } from '@phosphor-icons/react';
+import { useToast } from '@context/ToastContext';
 
 const AdminPage = () => {
   const [orders, setOrders] = useState([]);
@@ -20,6 +21,7 @@ const AdminPage = () => {
   const [revenue, setRevenue] = useState(0);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast()
 
   useEffect(() => {
     const handleRequest = async () => {
@@ -30,14 +32,15 @@ const AdminPage = () => {
         setRevenue(res.data.revenue.month);
         setData(res.data);
       } catch (err) {
-        console.error("Failed To Get Resources:", err)
-        alert("Failed To Get Resources:")
+        const errorMessage = err?.response?.data?.message || "Gagal Mendapatkan Sumber Daya!"
+        showToast(errorMessage, 'failed')
+        console.error("Failed To Get Resources:", err?.response)
       } finally {
         setLoading(false);
       }
     };
     handleRequest();
-  }, []);
+  }, [showToast]);
 
   const handleReveChange = (reve) => {
     if (!data) return;

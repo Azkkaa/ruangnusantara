@@ -3,6 +3,7 @@ import { useCart } from '@context/CartContext';
 import { HeartIcon, ShoppingCart, SpinnerGapIcon } from '@phosphor-icons/react';
 import { formatCurrency } from '@utils/helper'
 import { useLogin } from '@context/AuthContext'
+import { useToast } from '@context/ToastContext'
 import api from '@utils/api';
 
 const MenuItem = ({ item }) => {
@@ -10,18 +11,20 @@ const MenuItem = ({ item }) => {
   const { user } = useLogin()
   const [isProcess, setIsProcess] = useState(false);
   const [isFavorite, setIsFavorite] = useState(user?.favorites_menu.some((menu) => menu.id === item.id));
+  const { showToast } = useToast()
 
   const handleAddFavorite = async (id) => {
-    if (!user) return alert('You must login first!!')
+    if (!user) return showToast('You must login first!!')
 
     setIsProcess(true)
     try {
       const res = await api.post(`api/user/menu/${id}/favorite`);
       
       setIsFavorite(res.data.is_favorite)
-      alert(res.data.message)
+      showToast(res.data.message)
     } catch (err) {
-      console.error("Failed to add favorite", err)
+      showToast(err.response.data.message)
+      console.error("Failed to add favorite", err.response)
     } finally {
       setIsProcess(false)
     }

@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import api from '../utils/api';
+import api from '@utils/api';
+import { formatCurrency, formatDate, getStatusColor } from '@utils/helper'
+import { useToast } from '@context/ToastContext';
 import { SpinnerGapIcon } from '@phosphor-icons/react';
-import { formatCurrency, formatDate, getStatusColor } from '../utils/helper'
 
 const OrderCard = ({ order, updateNumStatus }) => {
   const [status, setStatus] = useState(order.status)
   const [disabled, setDisabled] = useState(false)
+  const { showToast } = useToast()
 
   const handleUpdateStatus = async (id, newStatus) => {
     try {
@@ -15,13 +17,13 @@ const OrderCard = ({ order, updateNumStatus }) => {
       })
 
       if (res.data.success) {
-        alert('Menu item status successfully updated!')
         setStatus(res.data.order.status)
         updateNumStatus()
+        showToast('Menu item status successfully updated!')
       }
-    } catch (e) {
-      console.error("Gagal update status:", e.response?.data?.message);
-      alert('Gagal Update Status!!')
+    } catch (err) {
+      console.error("Failed to update statu:", err?.response);
+      showToast('Gagal untuk update status!!', 'failed')
     } finally {
       setDisabled(false)
     }

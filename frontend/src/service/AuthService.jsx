@@ -4,14 +4,12 @@ export const handleRegister = async (credentials) => {
   try {
     const res = await api.post('/api/register', credentials);
 
-    if (res.status === 201 || res.data.success) {
-      return { success: true, message: 'Successfully registered' };
+    if (res.data.success) {
+      return res.data
     }
-
-    return { success: false, message: res.data.message };
-  } catch (error) {
-    console.error("Detail Error:", error.response?.data);
-    return { success: false, message: error.response?.data?.message || 'Oops something went wrong' };
+  } catch (err) {
+    console.error("Failed to register:", err?.response?.data?.message)
+    throw err
   }
 }
 
@@ -20,10 +18,9 @@ export const handleLogin = async (credentials, loginFunction) => {
     const user = await loginFunction(credentials)
 
     return user
-  } catch (error) {
-    console.error('Failed to login!!')
-    alert('Failed to login:', error.message)
-    throw error
+  } catch (err) {
+    console.error('Failed to login:', err?.response)
+    throw err
   }
 }
 
@@ -33,7 +30,7 @@ export const handleLogout = async () => {
 
     return res.data
   } catch (err) {
-    console.error("Failed to logout:", err);
+    console.error("Failed to logout:", err?.response);
     throw err;
   }
 }

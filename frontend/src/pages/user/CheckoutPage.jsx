@@ -4,6 +4,7 @@ import { useCart } from '@context/CartContext';
 import { useLogin } from '@context/AuthContext';
 import api from '@utils/api'
 import { formatCurrency } from '@utils/helper'
+import { useToast } from '@context/ToastContext';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(false);
   const isCheckingOut = useRef(false);
   const { user } = useLogin()
+  const { showToast } = useToast()
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -27,9 +29,9 @@ const CheckoutPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (!formData.customerName.trim() || !formData.phone.trim()) {
-      alert('Please fill in all required fields');
+      showToast('Please fill in all required fields');
       return;
     }
 
@@ -39,7 +41,7 @@ const CheckoutPage = () => {
       notes: formData.notes,
       items: cartItems
     };
-
+    
     try {
       setLoading(true)
       const res = await api.post('/api/order', orderData)
@@ -47,13 +49,16 @@ const CheckoutPage = () => {
       if (res.data.success) {
         isCheckingOut.current = true;
 
+        showToast(res.data.message)
         clearCart();
         navigate('/success');
       }
-    } catch (e) {
+    } catch (err) {
+      const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi. Periksa koneksi Anda!"
+      showToast(errorMessage, 'failed')
+      console.error("Failed to create order:", e);
+    } finally {
       setLoading(false)
-      console.error("Order failed: ", e);
-      alert("Something went wrong. Please try again.")
     }
   };
 
