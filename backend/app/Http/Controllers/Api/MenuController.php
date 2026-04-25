@@ -9,10 +9,10 @@ class MenuController extends Controller
 {
     public function index ()
     {
-        $menus = Menu::all();
+        $menus = Menu::with('categories')->get();
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Getting menu list',
             'resources' => $menus
         ], 200);

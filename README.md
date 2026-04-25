@@ -52,6 +52,7 @@
 - [x] Get User Order (Page for users to view their complete order) -- Finish = 22:40 WIB 20-04-2026 --
 - [x] Favorite Menu (User can add favorite menu item to their favorite list) -- Finish = 19:43 23-04-2026 --
 - [x] Global Toast Notification (users get notifications of what they do) -- Finish = 19:48 24-04-2026 --
+- [x] Category Menu (Organize the menu list by category) -- Finish = 16:57 25-04-2026 --
 - [ ] Item Stock Limit
 - [ ] Reservation Table
 - [ ] Midtrans API Payment

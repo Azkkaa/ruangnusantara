@@ -16,6 +16,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function
     Route::get('/order-status', [AdminOrderController::class, 'statusOrder']);
 
     Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
+
+    Route::apiResource('menus', MenuController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

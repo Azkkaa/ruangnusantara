@@ -17,4 +17,9 @@ class Menu extends Model
     {
         return $this->belongsToMany(User::class, 'favorite_menus');
     }
+
+    public function categories ()
+    {
+        return $this->belongsToMany(Category::class, 'category_menu');
+    }
 }
