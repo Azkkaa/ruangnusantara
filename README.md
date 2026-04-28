@@ -53,6 +53,7 @@
 - [x] Favorite Menu (User can add favorite menu item to their favorite list) -- Finish = 19:43 23-04-2026 --
 - [x] Global Toast Notification (users get notifications of what they do) -- Finish = 19:48 24-04-2026 --
 - [x] Category Menu (Organize the menu list by category) -- Finish = 16:57 25-04-2026 --
+- [x] CRUD Menu (CRUD Menu can only be performed by an admin Auth) -- Finish = 21:21 28-04-2026 --
 - [ ] Item Stock Limit
 - [ ] Reservation Table
 - [ ] Midtrans API Payment

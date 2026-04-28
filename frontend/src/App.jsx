@@ -1,17 +1,33 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HeaderCondition from './components/HeaderCondition';
-import MenuPage from './pages/user/MenuPage';
-import CartPage from './pages/user/CartPage';
-import CheckoutPage from './pages/user/CheckoutPage';
-import AdminDashboardPage from './pages/admin/DashboardPage';
-import SuccessPage from './pages/SuccessPage';
-import ProfilePage from './pages/ProfilePage';
-import AuthPage from './pages/auth/AuthPage';
-import AdminRoute from './pages/AdminRoute';
-import UserRoute from './pages/UserRoute';
-import MyOrderPage from './pages/user/MyOrderPage';
-import FavoriteMenu from './pages/user/FavoriteMenu'
-import SidebarCondition from './components/SidebarCondition';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import {
+  HeaderCondition,
+  SidebarCondition,
+} from './components';
+
+import {
+  AdminRoute,
+  UserRoute,
+  ProfilePage,
+  SuccessPage,
+} from './pages';
+
+import {
+  DashboardPage,
+  CreateMenuPage,
+  UpdateMenuPage,
+  DeleteMenuPage,
+} from './pages/admin';
+
+import { AuthPage } from './pages/auth';
+
+import {
+  CartPage,
+  CheckoutPage,
+  FavoriteMenu,
+  MenuPage,
+  MyOrderPage,
+} from './pages/user';
 
 function App() {
   return (
@@ -36,7 +52,12 @@ function App() {
 
             {/* Admin Page */}
             <Route path="/admin" element={<AdminRoute />}>
-              <Route path="orders" element={<AdminDashboardPage />} />
+              <Route path="orders" element={<DashboardPage />} />
+              <Route path="menu">
+                <Route path="create" element={<CreateMenuPage />}/>
+                <Route path="update" element={<UpdateMenuPage />}/>
+                <Route path="delete" element={<DeleteMenuPage />}/>
+              </Route>
             </Route>
           </Routes>
         </SidebarCondition>

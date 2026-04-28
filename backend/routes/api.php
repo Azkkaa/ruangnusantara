@@ -7,8 +7,10 @@ use App\Http\Controllers\API\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/menus', [MenuController::class, 'index']);
+Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function () {
     Route::get('/orders', [AdminOrderController::class, 'index']);
@@ -17,7 +19,10 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function
 
     Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
 
-    Route::apiResource('menus', MenuController::class);
+    // CUD(Create Update Delete) Menu
+    Route::post('/menu/create', [MenuController::class, 'store']);
+    Route::put('/menu/{id}/update', [MenuController::class, 'update']);
+    Route::delete('/menu/{id}/delete', [MenuController::class, 'destroy']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
