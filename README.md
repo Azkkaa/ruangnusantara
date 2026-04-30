@@ -1,60 +1,54 @@
-# List MVP Feature
+# 🍽️ Rasa Nusantara - Full-stack Restaurant Ordering System
 
-## Frontend
-- [x] Make listing product
-- [x] Order makanan dengan fitur bisa pesan multi order, yang artinya bisa pesan menu A lebih dari 1 dan bisa pesan menu B juga lebih dari 1 dan nantinya nominal-nya dijumlahkan
-- [x] admin dashboard untuk melihat pesanan.
-- [x] sistem checkout, kali ini hanya dengan COD. yang artinya setelah user click tombol "ini" maka akan create data di database dan akan disimpan di database/ditampilkan di admin dashboard
+Rasa Nusantara adalah aplikasi pemesanan restoran berbasis web dengan arsitektur *decoupled* yang memisahkan antara *Frontend* dan *Backend*. Dibangun untuk memberikan pengalaman pemesanan makanan yang mulus bagi pelanggan, serta menyediakan dasbor manajemen yang komprehensif bagi admin restoran.
+
+## 🚀 Tech Stack
+
+- **Frontend:** React 19, Tailwind CSS
+- **Backend:** Laravel 12, MySQL
+- **Authentication:** Laravel Sanctum
+- **Architecture:** RESTful API
+
+## ✨ Key Features
+
+### 👤 Customer (User) Features
+* **Menu Exploration:** Menampilkan daftar menu yang terorganisir berdasarkan kategori.
+* **Multi-item Cart System:** Sistem keranjang belanja yang memungkinkan pengguna memesan berbagai menu dengan kuantitas berbeda secara bersamaan.
+* **Favorite Menus:** Pengguna dapat menyimpan menu ke dalam daftar favorit pribadi.
+* **Order Tracking & History:** Halaman khusus bagi pengguna untuk melihat riwayat pesanan mereka secara lengkap.
+* **Interactive UI:** Dilengkapi dengan *Global Toast Notifications* untuk setiap aksi pengguna.
+* **Checkout System:** Mendukung sistem pembayaran *Cash on Delivery* (COD).
+
+### 🛡️ Admin Features (Role-Based Access Control)
+* **Secure Dashboard:** Rute dan endpoint yang dilindungi khusus untuk peran Admin.
+* **Order Management:** Memantau seluruh pesanan masuk dan memperbarui status pesanan secara *real-time*.
+* **Menu Management:** Sistem CRUD penuh untuk menambah, mengedit, atau menghapus item menu secara dinamis.
+
+## 📡 API Endpoints Reference
+
+### Public Routes
+* `POST /login` - User authentication
+* `POST /register` - Register new user
+* `GET /menus` - Fetch all available menus
+
+### Protected Routes (Requires Auth Token)
+* `POST /logout` - Terminate user session
+* `GET /user` - Get current authenticated user profile
+* `POST /orders` - Create a new order
+* `GET /orders/user` - Fetch current user's order history
+
+### Admin Routes (Requires Admin Role)
+* `GET /admin/orders` - Fetch all orders
+* `GET /admin/orders/{id}` - Get specific order details
+* `PATCH /orders/{id}/status` - Update specific order status
+
+## 🗺️ Development Roadmap
+
+Fitur-fitur berikut sedang dalam tahap perencanaan dan pengembangan untuk pembaruan berikutnya:
+- [ ] **Midtrans API Payment Integration:** Transisi dari sistem COD ke pembayaran digital otomatis.
+- [ ] **Item Stock Limit:** Manajemen inventaris dan ketersediaan stok *real-time*.
+- [ ] **Table Reservation System:** Fitur pemesanan tempat/meja makan.
+- [ ] **Advanced Error Handling:** Peningkatan respons *error* pada sisi *Frontend* dan *Backend*.
 
 ---
-
-## Backend
-- [x] Make data seeder in backend for product
-- [x] Make API call and test it
-    - [x] GET /menus - Take all menu available
-    - [x] POST /orders - Make new order
-    - [x] GET /admin/orders - Admin - Take all order
-    - [x] GET /admin/orders/{id} - Admin - Detail 1 order
-    - [x] PATCH /orders/{id}/status - Admin - Updating order status
-
----
-
-## Auth System (Next Development)
-- [x] Setup Laravel Sanctum
-- [x] Register API
-- [x] Login API
-- [x] Logout API
-- [x] Get current user (profile)
-- [x] Integrate auth with frontend (React)
-- [x] Store token in frontend (cookie)
-
----
-
-## Authorization (Admin Role)
-- [x] Add role column in users table (admin / user)
-- [x] Restrict admin routes using middleware
-- [x] Protect endpoints:
-    - [x] GET /admin/orders
-    - [x] GET /admin/orders/{id}
-    - [x] GET /user
-    - [x] PATCH /orders/{id}/status
-- [x] Create admin middleware (check role === admin)
-- [x] (Optional) Seed default admin user
-
----
-
-## Stable version of online ordering based application (Rasa Nusantara)
-### &#9745; List MVP Done
-### &#9745; Auth System
-### &#9745; Page Auth Role
-
-## Future feature in here
-- [x] Get User Order (Page for users to view their complete order) -- Finish = 22:40 WIB 20-04-2026 --
-- [x] Favorite Menu (User can add favorite menu item to their favorite list) -- Finish = 19:43 23-04-2026 --
-- [x] Global Toast Notification (users get notifications of what they do) -- Finish = 19:48 24-04-2026 --
-- [x] Category Menu (Organize the menu list by category) -- Finish = 16:57 25-04-2026 --
-- [x] CRUD Menu (CRUD Menu can only be performed by an admin Auth) -- Finish = 21:21 28-04-2026 --
-- [ ] Item Stock Limit
-- [ ] Reservation Table
-- [ ] Midtrans API Payment
-- [ ] Handling Error
+*Developed by Muhammad Azka Faza Muttaqin*
