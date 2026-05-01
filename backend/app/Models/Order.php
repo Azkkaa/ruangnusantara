@@ -14,4 +14,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->whereIn('status', ['pending', 'process']);
+    }
 }

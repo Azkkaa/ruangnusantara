@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'price', 'image_url'])]
+#[Fillable(['name', 'price', 'image_url', 'stock', 'is_avaible'])]
 class Menu extends Model
 {
     public function orderItem()
@@ -21,5 +21,12 @@ class Menu extends Model
     public function categories ()
     {
         return $this->belongsToMany(Category::class, 'category_menu');
+    }
+
+    protected function casts()
+    {
+        return [
+            'is_avaible' => 'boolean',
+        ];
     }
 }

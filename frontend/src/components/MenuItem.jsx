@@ -11,6 +11,7 @@ const MenuItem = ({ item }) => {
   const { user } = useLogin()
   const [isProcess, setIsProcess] = useState(false);
   const [isFavorite, setIsFavorite] = useState(user?.favorites_menu.some((menu) => menu.id === item.id));
+  const isDisable = item.is_avaible;
   const { showToast } = useToast()
 
   const handleAddFavorite = async (id) => {
@@ -67,8 +68,8 @@ const MenuItem = ({ item }) => {
           <h3 className="text-lg font-bold text-gray-800 group-hover:text-orange-600 transition-colors line-clamp-1">
             {item.name}
           </h3>
-          <p className="text-gray-500 text-xs mt-1 line-clamp-2 min-h-8">
-            {item.description}
+          <p className="mt-1 text-gray-800 line-clamp-2 min-h-8">
+            Stock: {item.stock}
           </p>
         </div>
 
@@ -82,7 +83,8 @@ const MenuItem = ({ item }) => {
 
           <button
             onClick={() => addToCart(item)}
-            className="flex items-center gap-2 bg-orange-600 text-white p-3 sm:px-4 sm:py-2.5 rounded-xl font-bold hover:bg-orange-700 active:scale-95 transition-all duration-200 shadow-md shadow-orange-200 cursor-pointer"
+            disabled={!isDisable}
+            className="flex items-center gap-2 bg-orange-600 text-white p-3 sm:px-4 sm:py-2.5 rounded-xl font-bold hover:bg-orange-700 active:scale-95 transition-all duration-200 shadow-md shadow-orange-200 cursor-pointer disabled:bg-gray-700"
           >
             <ShoppingCart weight="bold" size={18} />
             <span className="hidden sm:inline text-sm">Tambah</span>

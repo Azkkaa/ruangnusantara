@@ -63,7 +63,8 @@ const CreateMenuPage = () => {
         e.target.reset();
       }
     } catch (err) {
-      const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi.";
+      const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi. Periksa koneksi anda";
+      console.error("Failed to run operasion:", err)
       showToast(errorMessage, 'failed');
     } finally {
       setIsProcess(false);

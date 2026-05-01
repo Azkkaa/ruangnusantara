@@ -19,7 +19,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   const menuItems = [
-    { path: '/admin', name: 'Dashboard', icon: <Layout size={24} /> },
+    { path: '/admin/dashboard', name: 'Dashboard', icon: <Layout size={24} /> },
     { path: '/admin/orders', name: 'Pesanan', icon: <ListBullets size={24} /> },
     { 
       name: 'Kelola Menu', 
@@ -29,6 +29,7 @@ const Sidebar = () => {
         { path: '/admin/menu/create', name: 'Tambah Menu' },
         { path: '/admin/menu/update', name: 'Edit Menu' },
         { path: '/admin/menu/delete', name: 'Delete Menu' },
+        { path: '/admin/menu/stock', name: 'Stock Menu' },
       ]
     },
     { path: '/admin/users', name: 'Pelanggan', icon: <Users size={24} /> },
@@ -153,7 +154,7 @@ const Sidebar = () => {
         </Link>
 
         <Link 
-          to="/profile" 
+          to="/user/profile" 
           className="flex items-center gap-4 px-3 py-3 text-blue-400 hover:bg-blue-500/10 rounded-xl transition-all group"
         >
           <div className="shrink-0 transition-transform">

@@ -47,6 +47,7 @@ const UpdateMenuPage = () => {
       showToast(res.data.message);
     } catch (err) {
       const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi. Periksa koneksi Anda!";
+      console.error('Failed to run operations:', err)
       showToast(errorMessage, 'failed');
     } finally {
       setIsProcess(false);

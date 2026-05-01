@@ -19,7 +19,8 @@ export const CartProvider = ({ children }) => {
   const { showToast } = useToast()
 
   const addToCart = (item) => {
-    if (!user) return showToast('You must login first!!')
+    if (!user) return showToast('You must login first!!', 'failed')
+    if (!item.is_avaible) return showToast('This item is not avaible now', 'failed')
 
     setCartItems(prev => {
       const existingItem = prev.find(i => i.id === item.id);

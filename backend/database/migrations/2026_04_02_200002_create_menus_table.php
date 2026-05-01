@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('price');
+            $table->integer('stock')->default(0);
+            $table->boolean('is_avaible')->default(false);
             $table->string('image_url');
-            $table->integer('stock');
-            $table->boolean('is_avaible');
             $table->timestamps();
         });
     }

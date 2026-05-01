@@ -13,10 +13,12 @@ import {
 } from './pages';
 
 import {
-  DashboardPage,
+  OrderManagementPage,
   CreateMenuPage,
   UpdateMenuPage,
   DeleteMenuPage,
+  StockManagement,
+  AdminDashboard,
 } from './pages/admin';
 
 import { AuthPage } from './pages/auth';
@@ -37,6 +39,7 @@ function App() {
 
         <SidebarCondition>
           <Routes>
+            {/* <Route path='*' element={} /> */}
             <Route path="/" element={<MenuPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
@@ -52,11 +55,13 @@ function App() {
 
             {/* Admin Page */}
             <Route path="/admin" element={<AdminRoute />}>
-              <Route path="orders" element={<DashboardPage />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="orders" element={<OrderManagementPage />} />
               <Route path="menu">
                 <Route path="create" element={<CreateMenuPage />}/>
                 <Route path="update" element={<UpdateMenuPage />}/>
                 <Route path="delete" element={<DeleteMenuPage />}/>
+                <Route path="stock" element={<StockManagement />} />
               </Route>
             </Route>
           </Routes>

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\OutOfStockException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Models\Menu;
-use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -14,21 +14,27 @@ class OrderController extends Controller
     {
         try {
             $userOrder = DB::transaction(function () use ($request) {
-                // Service
-
-                // this code prevent hacker from manipulate the price
-                // rather than we use data that client sent
-                // we validate the data is right in here using whereIn get
                 $user = $request->user();
                 $itemids = collect($request->items)->pluck('id')->toArray();
-                $items = Menu::whereIn('id', $itemids)->get()->keyBy('id');
+                $items = Menu::whereIn('id', $itemids)->lockForUpdate()->get()->keyBy('id');
 
                 $totalPrice = 0;
                 $orderItemsCreation = [];
                 foreach ($request->items as $requestItem) {
                     $menu = $items[$requestItem['id']];
-                    $subtotal = $menu->price * $requestItem['quantity'];
 
+                    // 1. Stock validation
+                    if ($menu->stock < $requestItem['quantity']) {
+                        throw new OutOfStockException("Maaf, stok {$menu->name} tidak mencukupi (Tersisa: {$menu->stock}).");
+                    }
+
+                    $newStock = $menu->stock - $requestItem['quantity'];
+                    $menu->update([
+                        'stock' => $newStock,
+                        'is_avaible' => $newStock > 0
+                    ]);
+
+                    $subtotal = $menu->price * $requestItem['quantity'];
                     $totalPrice += $subtotal;
 
                     $orderItemsCreation[] = [
@@ -38,7 +44,6 @@ class OrderController extends Controller
                         'subtotal' => $subtotal
                     ];
                 }
-
 
                 $userOrder = $user->order()->create([
                     'customer_name' => $request->customerName,
@@ -59,12 +64,13 @@ class OrderController extends Controller
                 'message' => 'Berhasil Menambahkan Pesanan!',
                 'order' => $userOrder
             ]);
+        }  catch (OutOfStockException $e) {
+            return $e;
         } catch (\Exception $e) {
             return response()->json([
-                'response' => [
-                    'message' => $e->getMessage(),
-                    'line' => $e->getLine()
-                ]
+                'success' => false,
+                'message' => "Internal Server Error!",
+                'error' => $e->getMessage()
             ], 500);
         }
     }
