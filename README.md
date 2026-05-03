@@ -45,7 +45,7 @@ Rasa Nusantara adalah aplikasi pemesanan restoran berbasis web dengan arsitektur
 ## 🗺️ Development Roadmap
 
 Fitur-fitur berikut sedang dalam tahap perencanaan dan pengembangan untuk pembaruan berikutnya:
-- [ ] **Midtrans API Payment Integration:** Transisi dari sistem COD ke pembayaran digital otomatis.
+- [x] **Midtrans API Payment Integration:** Transisi dari sistem COD ke pembayaran digital otomatis.
 - [x] **Item Stock Limit:** Manajemen inventaris dan ketersediaan stok *real-time*.
 - [ ] **Table Reservation System:** Fitur pemesanan tempat/meja makan.
 - [ ] **Advanced Error Handling:** Peningkatan respons *error* pada sisi *Frontend* dan *Backend*.
