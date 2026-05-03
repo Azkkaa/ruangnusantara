@@ -1,9 +1,35 @@
 import React, { useState } from 'react';
-import { CaretDown, CaretUp, Receipt, CalendarBlank, User, Phone, Notepad } from '@phosphor-icons/react';
+import { CaretDown, CaretUp, Receipt, CalendarBlank, User, Phone, Notepad, CreditCard } from '@phosphor-icons/react';
 import { formatCurrency, formatDate, getStatusColor } from '../utils/helper'
+import { useToast } from '@context/ToastContext'; 
 
 const OrderItemCard = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { showToast } = useToast();
+
+  const handlePayment = () => {
+    if (window.snap && order.snap_token) {
+      window.snap.pay(order.snap_token, {
+        onSuccess: function() {
+          showToast("Pembayaran berhasil!");
+          window.location.reload();
+        },
+        onPending: function() {
+          showToast("Menunggu pembayaran! Mohon segera selesaikan pembayaran!");
+          window.location.reload()
+        },
+        onError: function(result) {
+          showToast("Pembayaran gagal!", "failed");
+          console.log(result);
+        },
+        onClose: function() {
+          showToast("Pembayaran dibatalkan!", 'failed');
+        }
+      });
+    } else {
+      alert("Sistem pembayaran sedang dimuat atau token tidak valid. Silakan coba beberapa saat lagi.");
+    }
+  };
 
   return (
     <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden mb-4 transition-all duration-300">
@@ -90,6 +116,20 @@ const OrderItemCard = ({ order }) => {
                 <span className="text-orange-600">{formatCurrency(order.total_price)}</span>
             </div>
           </div>
+
+          {/* ACTION BUTTONS */}
+          {order.status === 'pending' && (
+            <div className="mt-6 flex justify-end">
+              <button 
+                onClick={handlePayment}
+                className="flex items-center gap-2 bg-orange-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-orange-700 transition-colors shadow-md hover:shadow-lg active:scale-95"
+              >
+                <CreditCard size={20} weight="bold" />
+                Lanjutkan Pembayaran
+              </button>
+            </div>
+          )}
+          
         </div>
       )}
     </div>

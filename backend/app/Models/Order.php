@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['customer_name', 'phone', 'notes', 'total_price', 'status'])]
+#[Fillable(['customer_name', 'phone', 'notes', 'total_price', 'status', 'snap_token'])]
 class Order extends Model
 {
     const UPDATED_AT = null;

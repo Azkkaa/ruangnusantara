@@ -13,6 +13,7 @@ use App\Http\Controllers\CategoryController;
 
 Route::get('/menus', [MenuController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
+Route::post('/payment/notification', [OrderController::class, 'notification']);
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index']);

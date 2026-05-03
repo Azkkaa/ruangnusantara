@@ -48,21 +48,52 @@ const CheckoutPage = () => {
 
       if (res.data.success) {
         isCheckingOut.current = true;
+        showToast(res.data.message);
 
-        showToast(res.data.message)
-        clearCart();
-        navigate('/success');
+        window.snap.pay(res.data.order.snap_token, {
+          onSuccess: function() {
+            showToast("Pembayaran berhasil!");
+            clearCart();
+            navigate('/success')
+            window.location.reload()
+          },
+          onPending: function() {
+            showToast("Menunggu pembayaran! Mohon segera selesaikan pembayaran!");
+            clearCart()
+            navigate('/user/orders');
+            window.location.reload()
+          },
+          onError: function() {
+            showToast("Pembayaran gagal!");
+            window.location.reload()
+          },
+          onClose: function() {
+            showToast("Pembayaran dibatalkan!", 'failed');
+          }
+        });
+
       }
     } catch (err) {
       const errorMessage = err?.response?.data?.message || "Gagal melakukan operasi. Periksa koneksi Anda!"
       showToast(errorMessage, 'failed')
-      console.error("Failed to create order:", e);
+      console.error("Failed to create order:", err);
     } finally {
       setLoading(false)
     }
   };
 
   useEffect(() => {
+    // Snap card for payment sandbox
+    const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const clientKey = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
+
+    const script = document.createElement('script');
+    script.src = snapScript;
+    script.setAttribute('data-client-key', clientKey);
+    script.async = true;
+
+    document.body.appendChild(script);
+
     if (cartItems.length === 0 && !isCheckingOut.current) {
       navigate('/cart');
     }
@@ -122,11 +153,11 @@ const CheckoutPage = () => {
                     />
                   </div>
                 </div>
-                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                {/* <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                   <p className="text-sm text-blue-800">
                     <strong>Payment Method:</strong> Cash on Delivery (COD)
                   </p>
-                </div>
+                </div> */}
                 <button
                   type="submit"
                   className="w-full mt-6 bg-orange-600 text-white py-3 rounded-lg font-bold text-lg hover:bg-orange-700 transition disabled:bg-gray-600"

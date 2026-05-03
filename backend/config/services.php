@@ -14,6 +14,14 @@ return [
     |
     */
 
+    'midtrans' => [
+        'serverKey' => env('MIDTRANS_SERVER_KEY'),
+        'clientKey' => env('MIDTRANS_CLIENT_KEY'),
+        'isProduction' => env('MIDTRANS_IS_PRODUCTION'),
+        'isSanitize' => env('MIDTRANS_IS_SANITIZED'),
+        'is3Ds' => env('MIDTRANS_IS_3DS')
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

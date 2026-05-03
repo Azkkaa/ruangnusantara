@@ -36,7 +36,7 @@ class OrderController extends Controller
                 ->sum('total_price');
 
             return response()->json([
-                'message' => 'getting order data',
+                'message' => 'Getting order data!',
                 'resources' => $orders,
                 'total_orders' => [
                     'total' => $orderStatus->count(),
@@ -103,10 +103,5 @@ class OrderController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function show ()
-    {
-
     }
 }

@@ -22,7 +22,7 @@ const OrderCard = ({ order, updateNumStatus }) => {
         showToast('Menu item status successfully updated!')
       }
     } catch (err) {
-      console.error("Failed to update statu:", err?.response);
+      console.error("Failed to update status:", err?.response);
       showToast('Gagal untuk update status!!', 'failed')
     } finally {
       setDisabled(false)

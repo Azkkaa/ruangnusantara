@@ -13,7 +13,9 @@
         "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
-        "veelasky/laravel-hashid": "*"
+        "midtrans/midtrans-php": "^2.6",
+        "veelasky/laravel-hashid": "*",
+        "vinkla/hashids": "^14.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

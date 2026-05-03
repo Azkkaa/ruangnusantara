@@ -32,7 +32,8 @@
     28 => 'Termwind\\Laravel\\TermwindServiceProvider',
     29 => 'Pest\\Laravel\\PestServiceProvider',
     30 => 'Veelasky\\LaravelHashId\\HashIdServiceProvider',
-    31 => 'App\\Providers\\AppServiceProvider',
+    31 => 'Vinkla\\Hashids\\HashidsServiceProvider',
+    32 => 'App\\Providers\\AppServiceProvider',
   ),
   'eager' => 
   array (
@@ -53,7 +54,8 @@
     14 => 'Termwind\\Laravel\\TermwindServiceProvider',
     15 => 'Pest\\Laravel\\PestServiceProvider',
     16 => 'Veelasky\\LaravelHashId\\HashIdServiceProvider',
-    17 => 'App\\Providers\\AppServiceProvider',
+    17 => 'Vinkla\\Hashids\\HashidsServiceProvider',
+    18 => 'App\\Providers\\AppServiceProvider',
   ),
   'deferred' => 
   array (

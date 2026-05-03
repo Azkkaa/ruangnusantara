@@ -18,6 +18,17 @@ const MyOrderPage = () => {
   const { showToast } = useToast()
 
   useEffect(() => {
+    // Snap card for payment sandbox
+    const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const clientKey = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
+
+    const script = document.createElement('script');
+    script.src = snapScript;
+    script.setAttribute('data-client-key', clientKey);
+    script.async = true;
+
+    document.body.appendChild(script);
+
     const handleRequest = async () => {
       try {
         await getUserOrder();

@@ -18,7 +18,15 @@ return new class extends Migration
             $table->string('phone');
             $table->text('notes')->nullable();
             $table->integer('total_price');
-            $table->enum('status', ['pending', 'process', 'completed'])->index();
+            $table->enum('status', [
+                'pending',
+                'process',
+                'completed',
+                'cancel',
+                'deny',
+                'held'
+            ])->index();
+            $table->string('snap_token')->nullable();
             $table->timestamp('created_at')->index();
         });
     }
